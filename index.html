@@ -8,10 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TradingJnl">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="description" content="Registro visual de operaciones de trading">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <title>Trading Journal</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -1176,8 +1174,6 @@ function renderChart() {
 
 
 // ── ANALYTICS ───────────────────────────────────────────────────────────────
-let analyticsOpen = false;
-
 function toggleAnalytics() {
   analyticsOpen = !analyticsOpen;
   document.getElementById('analyticsToggleBtn').classList.toggle('open', analyticsOpen);
@@ -1407,9 +1403,8 @@ let _dp=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dp=e;const b=document.getElementById('installBanner');if(b)b.style.display='flex';});
 function pwaInstall(){if(!_dp)return;_dp.prompt();_dp.userChoice.then(()=>{_dp=null;const b=document.getElementById('installBanner');if(b)b.style.display='none';});}
 function pwaDismiss(){const b=document.getElementById('installBanner');if(b)b.style.display='none';}
-window.addEventListener('appinstalled',()=>{const b=document.getElementById('installBanner');if(b)b.style.display='none';});
 
 </script>
-<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px calc(14px + env(safe-area-inset-bottom));align-items:center;gap:12px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;"><div style="flex:1;min-width:160px;"><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div><div style="font-size:11px;color:#94a3b8;margin-top:2px">Agregar a pantalla de inicio</div></div><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;">Ahora no</button></div>
+<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;"><div style="flex:1"><div style="font-family:sans-serif;font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button></div>
 </body>
 </html>

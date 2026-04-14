@@ -1,4 +1,4 @@
-const CACHE_NAME = 'trading-journal-v1';
+const CACHE_NAME = 'trading-journal-v4';
 
 const PRECACHE = [
   './',

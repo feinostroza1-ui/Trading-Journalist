@@ -1398,13 +1398,20 @@ function renderHistogram() {
 
 render();
 
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+// Force unregister old SW and register new one
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+    regs.forEach(r => r.unregister());
+  }).then(() => {
+    navigator.serviceWorker.register('./sw.js?v=4').catch(()=>{});
+  });
+}
 let _dp=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dp=e;const b=document.getElementById('installBanner');if(b)b.style.display='flex';});
 function pwaInstall(){if(!_dp)return;_dp.prompt();_dp.userChoice.then(()=>{_dp=null;const b=document.getElementById('installBanner');if(b)b.style.display='none';});}
 function pwaDismiss(){const b=document.getElementById('installBanner');if(b)b.style.display='none';}
 
 </script>
-<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;"><div style="flex:1"><div style="font-family:sans-serif;font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button></div>
+<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;"><div style="flex:1"><div style="font-family:sans-serif;font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button></div>
 </body>
 </html>

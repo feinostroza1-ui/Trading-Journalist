@@ -52,9 +52,9 @@
   .nav-month { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
 
   /* CALENDAR */
-  .weekdays { display: grid; grid-template-columns: repeat(7, 1fr) 72px; gap: 6px; margin-bottom: 6px; }
+  .weekdays { display: grid; grid-template-columns: repeat(5, 1fr) 72px; gap: 6px; margin-bottom: 6px; }
   .weekday { text-align: center; font-size: 11px; color: var(--muted); padding: 6px 0; text-transform: uppercase; letter-spacing: 1px; }
-  .days-grid { display: grid; grid-template-columns: repeat(7, 1fr) 72px; gap: 6px; }
+  .days-grid { display: grid; grid-template-columns: repeat(5, 1fr) 72px; gap: 6px; }
 
   /* WEEK TOTAL CELL */
   .week-total-cell {
@@ -80,6 +80,9 @@
   .day-cell:hover { border-color: var(--accent); transform: translateY(-1px); }
   .day-cell.other-month { opacity: .3; pointer-events: none; }
   .day-cell.has-profit { background: var(--green-bg); border-color: #1a4028; }
+  .day-cell.has-be     { background: #2d2600; border-color: #5a4a00; }
+  .day-cell.has-be .day-num { color: #facc15; }
+  .day-cell.has-be .day-pnl { color: #facc15; }
   .day-cell.has-loss   { background: var(--red-bg);   border-color: #4a1a18; }
   .day-cell.week-selected { border-color: rgba(56,139,253,.55) !important; box-shadow: 0 0 0 1px rgba(56,139,253,.2); }
 
@@ -375,7 +378,7 @@
   <div class="calendar">
     <div class="weekdays">
       <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mie</div>
-      <div class="weekday">Jue</div><div class="weekday">Vie</div><div class="weekday">Sab</div><div class="weekday">Dom</div>
+      <div class="weekday">Jue</div><div class="weekday">Vie</div>
       <div class="weekday" style="color:var(--accent);font-size:10px">Sem</div>
     </div>
     <div class="days-grid" id="daysGrid"></div>
@@ -414,6 +417,7 @@
         <button class="chart-tab active" id="tabEquity" onclick="setChartMode('equity')">Equity acumulado</button>
         <button class="chart-tab"        id="tabDaily"  onclick="setChartMode('daily')">P&amp;L por día</button>
         <button class="chart-tab"        id="tabBar"    onclick="setChartMode('bar')">Barras</button>
+        <button class="chart-tab"        id="tabYear"   onclick="setChartMode('year')">Año completo</button>
       </div>
       <div class="chart-wrap" id="chartWrap">
         <canvas id="equityChart"></canvas>
@@ -577,55 +581,64 @@ function render() {
 function renderCalendar() {
   const grid = document.getElementById('daysGrid');
   grid.innerHTML = '';
-  const firstDay    = new Date(currentYear, currentMonth, 1).getDay();
-  const offset      = firstDay === 0 ? 6 : firstDay - 1;
+  const selSet = new Set(selectedWeek || []);
+
+  // Build Mon-Fri only cells for the month
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const prevDays    = new Date(currentYear, currentMonth, 0).getDate();
-  const selSet      = new Set(selectedWeek || []);
 
-  // Build flat list of all cells (prev padding + current + next padding)
-  const cells = []; // {key, dayNum, other}
+  // Find Monday of the week containing day 1
+  const day1 = new Date(currentYear, currentMonth, 1);
+  const dow1  = day1.getDay(); // 0=Sun,1=Mon..6=Sat
+  // Monday offset: if Sun(0)->-6, else 1-dow
+  const monOffset = dow1 === 0 ? -6 : 1 - dow1;
+  const weekStart = new Date(currentYear, currentMonth, 1 + monOffset);
 
-  for (let i = offset - 1; i >= 0; i--) {
-    const d = prevDays - i, m = currentMonth - 1;
-    const y = m < 0 ? currentYear - 1 : currentYear;
-    cells.push({ key: dayKey(y, ((m%12)+12)%12, d), d, other: true });
+  // Build rows of Mon-Fri
+  const rows = [];
+  let cur = new Date(weekStart);
+  while (true) {
+    // cur is a Monday
+    const weekDays = [];
+    for (let i = 0; i < 5; i++) {
+      const d   = cur.getDate();
+      const m   = cur.getMonth();
+      const y   = cur.getFullYear();
+      const other = (m !== currentMonth);
+      weekDays.push({ key: dayKey(y, m, d), d, other });
+      cur.setDate(cur.getDate() + 1);
+    }
+    // Skip to next Monday (skip Sat+Sun)
+    cur.setDate(cur.getDate() + 2);
+    rows.push(weekDays);
+    // Stop when all weekDays are past the month
+    const allOther = weekDays.every(w => w.other);
+    const anyInMonth = weekDays.some(w => !w.other);
+    if (!anyInMonth) break;
+    // Also stop if the next week's Monday is already past month end
+    const nextMon = new Date(cur);
+    if (nextMon.getMonth() > currentMonth && nextMon.getFullYear() >= currentYear) break;
+    if (nextMon.getFullYear() > currentYear) break;
   }
-  for (let d = 1; d <= daysInMonth; d++) {
-    cells.push({ key: dayKey(currentYear, currentMonth, d), d, other: false });
-  }
-  const totalCells = cells.length;
-  const rem = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
-  for (let d = 1; d <= rem; d++) {
-    const m = currentMonth + 1, y = m > 11 ? currentYear + 1 : currentYear;
-    cells.push({ key: dayKey(y, m%12, d), d, other: true });
-  }
 
-  // Emit row by row (7 day cells + 1 week-total cell)
-  for (let row = 0; row < cells.length / 7; row++) {
-    const rowCells = cells.slice(row * 7, row * 7 + 7);
-
-    // Emit 7 day cells
-    rowCells.forEach(({ key, d, other }) => {
+  rows.forEach(weekDays => {
+    // Emit 5 day cells
+    weekDays.forEach(({ key, d, other }) => {
       const cell = buildCell(d, key, other);
       if (selSet.has(key)) cell.classList.add('week-selected');
       grid.appendChild(cell);
     });
 
-    // Compute week total (only current-month days)
+    // Week total (Mon-Fri only, current month)
     let weekPnl = 0, activeDays = 0;
-    rowCells.forEach(({ key, other }) => {
+    weekDays.forEach(({ key, other }) => {
       if (other) return;
       const data = state[key];
       if (data) { weekPnl += parseFloat(data.pnl) || 0; activeDays++; }
     });
 
-    // Build week-total cell
     const wtCell = document.createElement('div');
     wtCell.className = 'week-total-cell';
-    if (activeDays > 0) {
-      wtCell.classList.add(weekPnl >= 0 ? 'profit-week' : 'loss-week');
-    }
+    if (activeDays > 0) wtCell.classList.add(weekPnl >= 0 ? 'profit-week' : 'loss-week');
 
     const lbl = document.createElement('div');
     lbl.className = 'wt-label';
@@ -651,9 +664,8 @@ function renderCalendar() {
       daysEl.textContent = activeDays + (activeDays === 1 ? ' día' : ' días');
       wtCell.appendChild(daysEl);
     }
-
     grid.appendChild(wtCell);
-  }
+  });
 }
 
 function buildCell(d, key, other) {
@@ -670,8 +682,10 @@ function buildCell(d, key, other) {
   body.appendChild(numEl);
 
   if (data) {
-    const pnl = parseFloat(data.pnl) || 0;
-    cell.classList.add(pnl >= 0 ? 'has-profit' : 'has-loss');
+    const pnl  = parseFloat(data.pnl) || 0;
+    const isBE = data.tags && data.tags.includes('be');
+    if (isBE) cell.classList.add('has-be');
+    else cell.classList.add(pnl >= 0 ? 'has-profit' : 'has-loss');
     const pnlEl = document.createElement('div');
     pnlEl.className = 'day-pnl ' + (pnl >= 0 ? 'pos' : 'neg');
     const absVal = Math.abs(pnl);
@@ -968,9 +982,9 @@ function toggleChart() {
 
 function setChartMode(mode) {
   chartMode = mode;
-  ['equity','daily','bar'].forEach(m => {
-    document.getElementById('tab'+m.charAt(0).toUpperCase()+m.slice(1))
-      .classList.toggle('active', m === mode);
+  ['equity','daily','bar','year'].forEach(m => {
+    const el = document.getElementById('tab'+m.charAt(0).toUpperCase()+m.slice(1));
+    if (el) el.classList.toggle('active', m === mode);
   });
   renderChart();
 }
@@ -1134,7 +1148,7 @@ function renderChart() {
       }
     });
 
-  } else { // bar
+  } else if (chartMode === 'bar') {
     chartInstance = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -1163,6 +1177,91 @@ function renderChart() {
         }
       }
     });
+  } else { // year — full year equity curve
+    // Build yearly data: one point per month
+    const yearLabels = [];
+    const yearEquity = [];
+    const yearMonthly = [];
+    let running = 0;
+    for (let m = 0; m < 12; m++) {
+      const mKeys = Object.keys(state).filter(k => {
+        if (k === 'meta' || k.split('-').length !== 3) return false;
+        const [ky, km] = k.split('-').map(Number);
+        return ky === currentYear && km === m + 1;
+      }).sort();
+      let monthTotal = 0;
+      mKeys.forEach(k => { monthTotal += parseFloat(state[k]?.pnl) || 0; });
+      running += monthTotal;
+      yearLabels.push(['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m]);
+      yearEquity.push(parseFloat(running.toFixed(2)));
+      yearMonthly.push(parseFloat(monthTotal.toFixed(2)));
+    }
+
+    const finalYear = yearEquity[yearEquity.length - 1];
+    const gradY = ctx.createLinearGradient(0, 0, 0, 240);
+    gradY.addColorStop(0, finalYear >= 0 ? 'rgba(63,185,80,.35)' : 'rgba(248,81,73,.35)');
+    gradY.addColorStop(1, 'rgba(0,0,0,0)');
+    const lineColorY = finalYear >= 0 ? GREEN : RED;
+
+    chartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: yearLabels,
+        datasets: [
+          {
+            type: 'line',
+            label: 'Equity acumulado',
+            data: yearEquity,
+            borderColor: lineColorY,
+            borderWidth: 2.5,
+            pointBackgroundColor: lineColorY,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            fill: true,
+            backgroundColor: gradY,
+            tension: 0.35,
+            yAxisID: 'y'
+          },
+          {
+            type: 'bar',
+            label: 'P&L mensual',
+            data: yearMonthly,
+            backgroundColor: barColors(yearMonthly),
+            borderRadius: 5,
+            borderSkipped: false,
+            yAxisID: 'y'
+          }
+        ]
+      },
+      options: {
+        ...commonOptions,
+        plugins: {
+          ...commonOptions.plugins,
+          legend: {
+            display: true,
+            labels: { color: MUTED, font: { family: 'JetBrains Mono', size: 10 }, boxWidth: 12 }
+          },
+          tooltip: {
+            ...commonOptions.plugins.tooltip,
+            callbacks: {
+              title: ctx => ctx[0].label + ' ' + currentYear,
+              label: ctx => {
+                const v = ctx.parsed.y;
+                const lbl = ctx.dataset.label;
+                return ' ' + lbl + ': ' + (v >= 0 ? '+' : '') + '$' + Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Update summary for year
+    const lbl2 = document.getElementById('chartSummaryLabel');
+    if (lbl2) {
+      lbl2.textContent = (finalYear >= 0 ? '+$' : '-$') + Math.abs(finalYear).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' año';
+      lbl2.style.color = finalYear >= 0 ? 'var(--green-light)' : 'var(--red)';
+    }
   }
 
   // Update summary label in button
@@ -1398,20 +1497,13 @@ function renderHistogram() {
 
 render();
 
-// Force unregister old SW and register new one
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(regs => {
-    regs.forEach(r => r.unregister());
-  }).then(() => {
-    navigator.serviceWorker.register('./sw.js?v=4').catch(()=>{});
-  });
-}
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister())).then(()=>navigator.serviceWorker.register('./sw.js?v=5').catch(()=>{}));}
 let _dp=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dp=e;const b=document.getElementById('installBanner');if(b)b.style.display='flex';});
 function pwaInstall(){if(!_dp)return;_dp.prompt();_dp.userChoice.then(()=>{_dp=null;const b=document.getElementById('installBanner');if(b)b.style.display='none';});}
 function pwaDismiss(){const b=document.getElementById('installBanner');if(b)b.style.display='none';}
 
 </script>
-<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;"><div style="flex:1"><div style="font-family:sans-serif;font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button></div>
+<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;"><div style="flex:1"><div style="font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button></div>
 </body>
 </html>

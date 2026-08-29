@@ -1,20 +1,5 @@
-const CACHE_NAME = 'trading-journal-v5';
-const PRECACHE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
-self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE)).then(() => self.skipWaiting()));
-});
-self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-});
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(caches.match(event.request).then(cached => {
-    if (cached) return cached;
-    return fetch(event.request).then(r => {
-      if (!r || r.status !== 200) return r;
-      const clone = r.clone();
-      caches.open(CACHE_NAME).then(c => c.put(event.request, clone));
-      return r;
-    }).catch(() => { if (event.request.mode === 'navigate') return caches.match('./index.html'); });
-  }));
-});
+const CACHE_NAME='trading-journal-v6';
+const PRE=['./','/index.html','/manifest.json','/icon-192.png','/icon-512.png'];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(PRE)).then(()=>self.skipWaiting()));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE_NAME).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(c=>{if(c)return c;return fetch(e.request).then(r=>{if(!r||r.status!==200)return r;const cl=r.clone();caches.open(CACHE_NAME).then(c2=>c2.put(e.request,cl));return r;}).catch(()=>{if(e.request.mode==='navigate')return caches.match('./index.html');});}));});

@@ -29,6 +29,52 @@
     --border: #3d4f66;
     --accent: #60a5fa;
   }
+
+  /* ── LIGHT MODE ── */
+  body.light {
+    --bg: #f0f4f8;
+    --bg2: #ffffff;
+    --bg3: #e8edf5;
+    --bg4: #d0d9e8;
+    --green: #16a34a;
+    --green-light: #15803d;
+    --green-bg: #dcfce7;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #cbd5e1;
+    --accent: #2563eb;
+  }
+  body.light .day-cell.has-be { background: #fefce8; border-color: #ca8a04; }
+  body.light .day-cell.has-be .day-num { color: #92400e; }
+  body.light .day-cell.has-be .day-pnl { color: #92400e; }
+  body.light .week-total-cell.profit-week { background: #dcfce7; border-color: #86efac; }
+  body.light .week-total-cell.loss-week   { background: #fee2e2; border-color: #fca5a5; }
+  body.light .modal { box-shadow: 0 20px 60px rgba(0,0,0,.15); }
+  body.light .lightbox { background: rgba(0,0,0,.85); }
+
+  /* ── THEME TOGGLE BUTTON ── */
+  .theme-btn {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .2s;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+  .theme-btn:hover { border-color: var(--accent); background: var(--bg3); }
+  .theme-icon { font-size: 16px; transition: transform .4s; }
+  body.light .theme-icon { transform: rotate(180deg); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; min-height: 100vh; }
   .app { max-width: 920px; margin: 0 auto; padding: 24px 16px 80px; }
@@ -347,7 +393,12 @@
       <h1>Trading Journal</h1>
       <div class="subtitle">Registro visual de operaciones · doble clic en día = semana</div>
     </div>
-    <div class="month-stats">
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">
+        <span class="theme-icon">🌙</span>
+        <span id="themeLabel">Modo día</span>
+      </button>
+      <div class="month-stats">
       <div class="stat-card">
         <div class="stat-label">Días</div>
         <div class="stat-value neutral" id="statDays">0</div>
@@ -364,7 +415,8 @@
         <div class="stat-label">Ops</div>
         <div class="stat-value neutral" id="statOps">0</div>
       </div>
-    </div>
+      </div><!-- month-stats -->
+    </div><!-- right col -->
   </div>
 
   <!-- NAV -->
@@ -1489,9 +1541,32 @@ function renderHistogram() {
   document.getElementById('histoLabels').innerHTML = labels.join('');
 }
 
+
+// ── THEME ─────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  document.getElementById('themeLabel').textContent = isLight ? 'Modo noche' : 'Modo día';
+  document.querySelector('.theme-icon').textContent  = isLight ? '☀️' : '🌙';
+  try { localStorage.setItem('tj_theme', isLight ? 'light' : 'dark'); } catch(e) {}
+  // Redraw chart with new colors
+  if (chartOpen) renderChart();
+}
+
+// Apply saved theme on load
+(function() {
+  try {
+    const saved = localStorage.getItem('tj_theme');
+    if (saved === 'light') {
+      document.body.classList.add('light');
+      document.getElementById('themeLabel').textContent = 'Modo noche';
+      document.querySelector('.theme-icon').textContent  = '☀️';
+    }
+  } catch(e) {}
+})();
+
 render();
 
-if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister())).then(()=>navigator.serviceWorker.register('./sw.js?v=6').catch(()=>{}));}
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister())).then(()=>navigator.serviceWorker.register('./sw.js?v=7').catch(()=>{}));}
 let _dp=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dp=e;const b=document.getElementById('installBanner');if(b)b.style.display='flex';});
 function pwaInstall(){if(!_dp)return;_dp.prompt();_dp.userChoice.then(()=>{_dp=null;const b=document.getElementById('installBanner');if(b)b.style.display='none';});}

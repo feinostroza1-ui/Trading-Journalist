@@ -372,83 +372,6 @@
   .histo-lbl { font-size: 8px; color: var(--muted); text-align: center; white-space: nowrap; overflow: hidden; }
   .histo-cnt { font-size: 9px; color: var(--text); font-weight: 600; }
 
-
-  /* ── ACCOUNT SELECTOR ── */
-  .account-bar {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-    background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
-    padding: 10px 14px; flex-wrap: wrap;
-  }
-  .account-bar label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-  .account-select {
-    background: var(--bg3); border: 1px solid var(--border); color: var(--text);
-    border-radius: 8px; padding: 7px 12px; font-family: inherit; font-size: 13px;
-    font-weight: 600; cursor: pointer; flex: 1; min-width: 140px; max-width: 260px;
-    outline: none;
-  }
-  .account-select:focus { border-color: var(--accent); }
-  .btn-add-account {
-    background: rgba(96,165,250,.15); border: 1px solid rgba(96,165,250,.3);
-    color: var(--accent); border-radius: 8px; padding: 7px 12px;
-    font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
-    transition: all .15s; white-space: nowrap;
-  }
-  .btn-add-account:hover { background: rgba(96,165,250,.25); }
-  .btn-del-account {
-    background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.2);
-    color: var(--red); border-radius: 8px; padding: 7px 10px;
-    font-family: inherit; font-size: 12px; cursor: pointer; transition: all .15s;
-  }
-  .btn-del-account:hover { background: rgba(248,113,113,.2); }
-
-  /* ── IMPORT MT5 PANEL ── */
-  .import-zone {
-    border: 2px dashed var(--border); border-radius: 10px; padding: 20px;
-    text-align: center; cursor: pointer; transition: all .2s; margin-bottom: 14px;
-    position: relative;
-  }
-  .import-zone:hover, .import-zone.drag { border-color: var(--accent); background: rgba(96,165,250,.05); }
-  .import-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .import-result { font-size: 12px; margin-top: 8px; padding: 10px; border-radius: 8px; }
-  .import-result.ok  { background: rgba(74,222,128,.1); color: var(--green-light); border: 1px solid rgba(74,222,128,.2); }
-  .import-result.err { background: rgba(248,113,113,.1); color: var(--red); border: 1px solid rgba(248,113,113,.2); }
-
-  /* ── PIE CHART ── */
-  .pie-wrap { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
-  .pie-canvas-wrap { position: relative; width: 140px; height: 140px; flex-shrink: 0; }
-  .pie-legend { display: flex; flex-direction: column; gap: 8px; flex: 1; }
-  .pie-legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-  .pie-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
-
-  /* ── SHARE MODAL ── */
-  .share-preview {
-    background: #0f1923; border-radius: 12px; padding: 20px;
-    margin-bottom: 14px; font-family: 'JetBrains Mono', monospace;
-  }
-  .share-preview h3 { font-family: 'Syne',sans-serif; font-size:16px; margin-bottom:12px; color:#f0f4f8; }
-  .share-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 12px; }
-  .share-stat { background: rgba(255,255,255,.05); border-radius: 8px; padding: 10px; text-align: center; }
-  .share-stat-val { font-size: 18px; font-weight: 700; }
-  .share-stat-lbl { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-
-  /* ── AI PANEL ── */
-  .ai-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-top: 20px; }
-  .ai-panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .ai-badge { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; border-radius: 8px; padding: 4px 10px; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
-  .ai-summary { font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
-  .ai-insight { background: var(--bg3); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
-  .ai-insight.warn { border-left-color: #facc15; }
-  .ai-insight.good { border-left-color: var(--green-light); }
-  .ai-insight.bad  { border-left-color: var(--red); }
-  .ai-loading { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; padding: 10px 0; }
-  .ai-spinner { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .ai-btn { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
-  .ai-btn:hover { opacity: .85; }
-  .ai-report-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-  .ai-tab { background: var(--bg3); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 5px 12px; font-family: inherit; font-size: 11px; cursor: pointer; transition: all .15s; }
-  .ai-tab.active { background: rgba(99,102,241,.2); border-color: #6366f1; color: #a5b4fc; }
-
   @media(max-width:580px){
     .day-cell { min-height: 66px; }
     .cell-body { padding: 6px 6px 5px; }
@@ -494,16 +417,6 @@
       </div>
       </div><!-- month-stats -->
     </div><!-- right col -->
-  </div>
-
-  <!-- ACCOUNT BAR -->
-  <div class="account-bar">
-    <label>Cuenta</label>
-    <select class="account-select" id="accountSelect" onchange="switchAccount(this.value)"></select>
-    <button class="btn-add-account" onclick="addAccount()">+ Nueva cuenta</button>
-    <button class="btn-del-account" onclick="deleteAccount()" title="Eliminar cuenta">🗑</button>
-    <button class="btn-add-account" onclick="openImportModal()" style="margin-left:auto">📥 Importar MT5</button>
-    <button class="btn-add-account" onclick="openShareModal()">📤 Compartir</button>
   </div>
 
   <!-- NAV -->
@@ -598,30 +511,7 @@
       <div class="histogram" id="histogram"></div>
       <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:4px" id="histoLabels"></div>
 
-      <!-- PIE CHART -->
-      <div class="an-title">Distribución TP / SL / BE</div>
-      <div class="pie-wrap">
-        <div class="pie-canvas-wrap"><canvas id="pieChart" width="140" height="140"></canvas></div>
-        <div class="pie-legend" id="pieLegend"></div>
-      </div>
-
     </div>
-  </div>
-
-  <!-- AI ANALYSIS PANEL -->
-  <div class="ai-panel" id="aiPanel">
-    <div class="ai-panel-header">
-      <span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Análisis IA</span>
-      <span class="ai-badge">✦ INTELIGENCIA</span>
-    </div>
-    <div class="ai-report-tabs">
-      <button class="ai-tab active" id="aiTabDay"   onclick="setAiTab('day')">Hoy</button>
-      <button class="ai-tab"        id="aiTabWeek"  onclick="setAiTab('week')">Semana</button>
-      <button class="ai-tab"        id="aiTabMonth" onclick="setAiTab('month')">Mes</button>
-      <button class="ai-tab"        id="aiTabYear"  onclick="setAiTab('year')">Año</button>
-    </div>
-    <div id="aiInsights"></div>
-    <button class="ai-btn" onclick="runAiAnalysis()" style="margin-top:10px">✦ Analizar mis datos</button>
   </div>
 
   <!-- TRADES LIST -->
@@ -678,43 +568,6 @@
   </div>
 </div>
 
-<!-- ── IMPORT MT5 MODAL ── -->
-<div class="modal-overlay" id="importModalOverlay" onclick="if(event.target===this)closeImportModal()">
-  <div class="modal" style="max-width:500px">
-    <h2>📥 Importar reporte MT5</h2>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6">
-      En MT5: <strong>Historia → clic derecho → Guardar como reporte → HTML</strong><br>
-      Selecciona el archivo HTML exportado y los trades se importarán automáticamente al mes correspondiente.
-    </p>
-    <div class="import-zone" id="importZone">
-      <input type="file" id="importFile" accept=".html,.htm" onchange="handleImportFile(event)">
-      <div style="font-size:28px;margin-bottom:8px">📄</div>
-      <div style="font-size:13px;color:var(--muted)">Arrastra el archivo HTML de MT5 aquí<br><small>o haz clic para seleccionarlo</small></div>
-    </div>
-    <div id="importResult"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeImportModal()">Cerrar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── SHARE MODAL ── -->
-<div class="modal-overlay" id="shareModalOverlay" onclick="if(event.target===this)closeShareModal()">
-  <div class="modal" style="max-width:420px">
-    <h2>📤 Compartir resumen</h2>
-    <div class="modal-actions" style="margin-bottom:14px;justify-content:flex-start">
-      <button class="btn btn-ghost" onclick="buildShare('week')" id="shareBtnWeek">Esta semana</button>
-      <button class="btn btn-ghost" onclick="buildShare('month')" id="shareBtnMonth">Este mes</button>
-      <button class="btn btn-ghost" onclick="buildShare('year')" id="shareBtnYear">Este año</button>
-    </div>
-    <div id="sharePreviewWrap"></div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeShareModal()">Cerrar</button>
-      <button class="btn btn-primary" onclick="downloadShareImage()">⬇ Descargar imagen</button>
-    </div>
-  </div>
-</div>
-
 <!-- ── LIGHTBOX ── -->
 <div class="lightbox" id="lightbox" onclick="lbBackdrop(event)">
   <div class="lightbox-img-wrap">
@@ -731,91 +584,24 @@
 
 <script>
 // ── STATE ───────────────────────────────────────────────────────────────────
-// ── MULTI-ACCOUNT STATE ─────────────────────────────────────────────────────
-const ACCOUNTS_KEY   = 'tj_accounts_v1';
-const BASE_STORE_KEY = 'tradingJournal_v3';
-
-// Initialize accounts FIRST (no function calls during let declarations)
-let accounts = (function() {
-  try {
-    const s = JSON.parse(localStorage.getItem(ACCOUNTS_KEY));
-    if (s && s.length) return s;
-  } catch(e) {}
-  const def = [{ id: 'default', name: 'Cuenta Principal', created: Date.now() }];
-  try { localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(def)); } catch(e) {}
-  return def;
-})();
-
-let currentAccountId = accounts[0].id;
-
-// Now safe to define helpers that use the above vars
-function saveAccounts(accs) {
-  try { localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accs !== undefined ? accs : accounts)); } catch(e) {}
-}
-function getStorageKey() { return currentAccountId + '_' + BASE_STORE_KEY; }
-
-// Load state AFTER currentAccountId is set
-let state = (function() {
-  try { return JSON.parse(localStorage.getItem(getStorageKey())) || {}; } catch(e) { return {}; }
-})();
-
-let currentYear  = state.meta && state.meta.year  !== undefined ? state.meta.year  : new Date().getFullYear();
-let currentMonth = state.meta && state.meta.month !== undefined ? state.meta.month : new Date().getMonth();
+const STORAGE_KEY = 'tradingJournal_v3';
+let state = loadState();
+let currentYear  = state.meta?.year  ?? new Date().getFullYear();
+let currentMonth = state.meta?.month ?? new Date().getMonth();
 let selectedWeek = null;
 let activeDay    = null;
-let pendingImages = [];
-let activeSide    = null;
-let activeTags    = new Set();
+let pendingImages = []; // [{dataUrl,name}]
+let activeSide    = null; // 'buy'|'sell'|'both'
+let activeTags    = new Set(); // 'tp','sl','be'
 
 function loadState() {
-  try { return JSON.parse(localStorage.getItem(getStorageKey())) || {}; }
-  catch(e) { return {}; }
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch { return {}; }
 }
 function saveState() {
   state.meta = { year: currentYear, month: currentMonth };
-  try { localStorage.setItem(getStorageKey(), JSON.stringify(state)); }
-  catch(e) { alert('⚠️ Almacenamiento lleno. Borra pantallazos para liberar espacio.'); }
-}
-
-// Account management
-function renderAccountSelector() {
-  const sel = document.getElementById('accountSelect');
-  if (!sel) return;
-  sel.innerHTML = accounts.map(a =>
-    `<option value="${a.id}" ${a.id===currentAccountId?'selected':''}>${a.name}</option>`
-  ).join('');
-}
-function switchAccount(id) {
-  currentAccountId = id;
-  state = loadState();
-  currentYear  = (state.meta && state.meta.year  !== undefined) ? state.meta.year  : new Date().getFullYear();
-  currentMonth = (state.meta && state.meta.month !== undefined) ? state.meta.month : new Date().getMonth();
-  selectedWeek = null;
-  render();
-}
-function addAccount() {
-  const name = prompt('Nombre de la cuenta (ej: Cuenta 100k, Demo):');
-  if (!name || !name.trim()) return;
-  const id = 'acc_' + Date.now();
-  accounts.push({ id, name: name.trim(), created: Date.now() });
-  saveAccounts();
-  currentAccountId = id;
-  state = { meta: { year: currentYear, month: currentMonth } };
-  saveState();
-  renderAccountSelector();
-  render();
-}
-function deleteAccount() {
-  if (accounts.length <= 1) { alert('Debes tener al menos una cuenta.'); return; }
-  const acc = accounts.find(a => a.id === currentAccountId);
-  if (!confirm(`¿Eliminar la cuenta "${acc?.name}"? Se perderán todos sus datos.`)) return;
-  try { localStorage.removeItem(getStorageKey()); } catch(e) {}
-  accounts = accounts.filter(a => a.id !== currentAccountId);
-  saveAccounts();
-  currentAccountId = accounts[0].id;
-  state = loadState();
-  renderAccountSelector();
-  render();
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e) { alert('⚠️ Almacenamiento lleno. Borra pantallazos de días anteriores para liberar espacio.'); }
 }
 function dayKey(y, m, d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
 function fmtSigned(n) {
@@ -828,14 +614,12 @@ const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Ago
 // ── RENDER ──────────────────────────────────────────────────────────────────
 function render() {
   document.getElementById('navMonth').textContent = `${MONTHS_ES[currentMonth]} ${currentYear}`;
-  renderAccountSelector();
   renderCalendar();
   renderStats();
   renderTradesList();
   renderWeekPanel();
   if (chartOpen) renderChart();
   if (analyticsOpen) renderAnalytics();
-  renderAiAutoSummary();
   // Update summary label in button even when closed
   const data = getChartData();
   if (data) {
@@ -1132,14 +916,10 @@ function closeModal() {
 function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
 
 // Drag & drop
-// Upload area drag-drop (safe init)
-function initUploadArea() {
-  const ua = document.getElementById('uploadArea');
-  if (!ua) return;
-  ua.addEventListener('dragover',  e => { e.preventDefault(); ua.classList.add('drag'); });
-  ua.addEventListener('dragleave', () => ua.classList.remove('drag'));
-  ua.addEventListener('drop', e => { e.preventDefault(); ua.classList.remove('drag'); handleFileList(e.dataTransfer.files); });
-}
+const ua = document.getElementById('uploadArea');
+ua.addEventListener('dragover',  e => { e.preventDefault(); ua.classList.add('drag'); });
+ua.addEventListener('dragleave', () => ua.classList.remove('drag'));
+ua.addEventListener('drop', e => { e.preventDefault(); ua.classList.remove('drag'); handleFileList(e.dataTransfer.files); });
 
 function handleFiles(e) { handleFileList(e.target.files); e.target.value = ''; }
 function handleFileList(files) {
@@ -1560,7 +1340,6 @@ function renderAnalytics() {
   renderTagCounters();
   renderMonthBars();
   renderHistogram();
-  renderPieChart();
 }
 
 function renderMetrics() {
@@ -1785,447 +1564,15 @@ function toggleTheme() {
   } catch(e) {}
 })();
 
-
-// ── PIE CHART ────────────────────────────────────────────────────────────────
-let pieInstance = null;
-function renderPieChart() {
-  const keys = monthKeys();
-  let tp=0, sl=0, be=0, none=0;
-  keys.forEach(k => {
-    const tags = state[k]?.tags || [];
-    if (tags.includes('tp')) tp++;
-    else if (tags.includes('sl')) sl++;
-    else if (tags.includes('be')) be++;
-    else none++;
-  });
-  const canvas = document.getElementById('pieChart');
-  const legend = document.getElementById('pieLegend');
-  if (!canvas) return;
-
-  if (pieInstance) { pieInstance.destroy(); pieInstance = null; }
-
-  const data   = [tp, sl, be, none].filter(v=>v>0);
-  const labels = ['TP ✅','SL ❌','BE ⚖️','Sin tag'].filter((_,i)=>[tp,sl,be,none][i]>0);
-  const colors = ['#4ade80','#f87171','#facc15','#64748b'];
-  const usedColors = colors.filter((_,i)=>[tp,sl,be,none][i]>0);
-  const total = tp+sl+be+none;
-
-  if (!total) { canvas.parentElement.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:20px 0">Sin operaciones registradas</div>'; return; }
-
-  pieInstance = new Chart(canvas.getContext('2d'), {
-    type: 'doughnut',
-    data: { labels, datasets: [{ data, backgroundColor: usedColors, borderWidth: 2, borderColor: 'var(--bg2)', hoverOffset: 6 }] },
-    options: {
-      responsive: false, maintainAspectRatio: false, cutout: '62%',
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#21262d', borderColor: '#30363d', borderWidth: 1,
-          callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} días (${Math.round(ctx.parsed/total*100)}%)` }
-        }
-      }
-    }
-  });
-
-  legend.innerHTML = labels.map((l,i) => {
-    const v = data[i]; const pct = Math.round(v/total*100);
-    return `<div class="pie-legend-item"><div class="pie-dot" style="background:${usedColors[i]}"></div><span>${l} — <strong>${v}</strong> días (${pct}%)</span></div>`;
-  }).join('');
-}
-
-// ── IMPORT MT5 HTML ──────────────────────────────────────────────────────────
-function openImportModal() { document.getElementById('importModalOverlay').classList.add('open'); }
-function closeImportModal() { document.getElementById('importModalOverlay').classList.remove('open'); document.getElementById('importResult').innerHTML=''; }
-
-// Import zone drag-drop (safe init)
-function initImportZone() {
-  const iz = document.getElementById('importZone');
-  if (!iz) return;
-  iz.addEventListener('dragover', e => { e.preventDefault(); iz.classList.add('drag'); });
-  iz.addEventListener('dragleave', () => iz.classList.remove('drag'));
-  iz.addEventListener('drop', e => { e.preventDefault(); iz.classList.remove('drag'); if(e.dataTransfer.files[0]) processImportFile(e.dataTransfer.files[0]); });
-}
-
-function handleImportFile(e) { if(e.target.files[0]) processImportFile(e.target.files[0]); e.target.value=''; }
-
-function processImportFile(file) {
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const html = ev.target.result;
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const rows = Array.from(doc.querySelectorAll('table tr'));
-      let imported = 0, skipped = 0;
-      const dateMap = {};
-
-      rows.forEach(row => {
-        const cells = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
-        if (cells.length < 8) return;
-
-        // MT5 HTML report columns: Time, Deal, Symbol, Type, Dir, Volume, Price, S/L, T/P, Profit, Balance, Comment
-        // Find date column (first column with date pattern)
-        const dateStr = cells[0] || cells[1];
-        const dateMatch = dateStr.match(/(\d{4})[.\/-](\d{2})[.\/-](\d{2})/);
-        if (!dateMatch) return;
-
-        const profit = parseFloat(cells.find(c => /^-?\d+\.?\d*$/.test(c) && Math.abs(parseFloat(c)) > 0) || '0');
-        if (isNaN(profit) || profit === 0) return;
-
-        const [,y,m,d] = dateMatch;
-        const key = `${y}-${m}-${d}`;
-        
-        // Detect type from cells
-        const typeCell = cells.join(' ').toLowerCase();
-        const side = typeCell.includes('buy') ? 'buy' : typeCell.includes('sell') ? 'sell' : null;
-
-        if (!dateMap[key]) dateMap[key] = { pnl: 0, trades: 0, side };
-        dateMap[key].pnl    += profit;
-        dateMap[key].trades += 1;
-      });
-
-      Object.entries(dateMap).forEach(([key, data]) => {
-        const existing = state[key] || {};
-        state[key] = {
-          pnl:    parseFloat((existing.pnl||0) + data.pnl).toFixed(2)*1,
-          trades: (existing.trades||0) + data.trades,
-          note:   existing.note || 'Importado MT5',
-          side:   existing.side || data.side,
-          tags:   existing.tags || [],
-          images: existing.images || []
-        };
-        imported++;
-      });
-
-      if (imported > 0) {
-        saveState();
-        render();
-        document.getElementById('importResult').innerHTML = `<div class="import-result ok">✅ ${imported} días importados correctamente desde MT5</div>`;
-      } else {
-        document.getElementById('importResult').innerHTML = `<div class="import-result err">⚠️ No se encontraron operaciones en el archivo. Asegúrate de exportar como "Reporte HTML detallado" desde MT5.</div>`;
-      }
-    } catch(err) {
-      document.getElementById('importResult').innerHTML = `<div class="import-result err">❌ Error al procesar: ${err.message}</div>`;
-    }
-  };
-  reader.readAsText(file, 'UTF-8');
-}
-
-// ── SHARE IMAGE ──────────────────────────────────────────────────────────────
-let shareMode = 'month';
-function openShareModal() { buildShare('month'); document.getElementById('shareModalOverlay').classList.add('open'); }
-function closeShareModal() { document.getElementById('shareModalOverlay').classList.remove('open'); }
-
-function buildShare(mode) {
-  shareMode = mode;
-  ['week','month','year'].forEach(m => {
-    const b = document.getElementById('shareBtnWeek'.replace('week', m==='week'?'Week':m==='month'?'Month':'Year'));
-    if(b) b.style.background = m===mode ? 'var(--accent)' : '';
-  });
-
-  const accName = accounts.find(a=>a.id===currentAccountId)?.name || 'Mi cuenta';
-  let stats = {}, title = '';
-
-  if (mode === 'week') {
-    const wKeys = (selectedWeek||[]).filter(k=>!k.startsWith('other'));
-    let pnl=0, wins=0, total=0, ops=0;
-    wKeys.forEach(k => { const d=state[k]; if(!d) return; const p=parseFloat(d.pnl)||0; pnl+=p; ops+=parseInt(d.trades)||0; if(p>0)wins++; total++; });
-    stats = { pnl, wins, total, ops, wr: total?Math.round(wins/total*100):0 };
-    title = 'Semana';
-  } else if (mode === 'month') {
-    const keys = monthKeys();
-    let pnl=0, wins=0, ops=0;
-    keys.forEach(k => { const d=state[k]; if(!d) return; const p=parseFloat(d.pnl)||0; pnl+=p; ops+=parseInt(d.trades)||0; if(p>0)wins++; });
-    stats = { pnl, wins, total: keys.length, ops, wr: keys.length?Math.round(wins/keys.length*100):0 };
-    title = `${MONTHS_ES[currentMonth]} ${currentYear}`;
-  } else {
-    let pnl=0, wins=0, total=0, ops=0;
-    for(let m=0;m<12;m++) {
-      const keys = Object.keys(state).filter(k=>{ if(k==='meta'||k.split('-').length!==3)return false; const[ky,km]=k.split('-').map(Number); return ky===currentYear&&km===m+1; });
-      keys.forEach(k=>{ const d=state[k]; if(!d)return; const p=parseFloat(d.pnl)||0; pnl+=p; ops+=parseInt(d.trades)||0; if(p>0)wins++; total++; });
-    }
-    stats = { pnl, wins, total, ops, wr: total?Math.round(wins/total*100):0 };
-    title = `Año ${currentYear}`;
-  }
-
-  const pos = stats.pnl >= 0;
-  const wrap = document.getElementById('sharePreviewWrap');
-  wrap.innerHTML = `
-    <div class="share-preview" id="shareCanvas">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#f0f4f8">Trading Journal</div>
-        <div style="font-size:11px;color:#64748b;margin-left:auto">${accName}</div>
-      </div>
-      <div style="font-size:13px;color:#94a3b8;margin-bottom:12px">${title}</div>
-      <div class="share-grid">
-        <div class="share-stat">
-          <div class="share-stat-val" style="color:${pos?'#4ade80':'#f87171'}">${fmtSigned(stats.pnl)}</div>
-          <div class="share-stat-lbl">P&L Total</div>
-        </div>
-        <div class="share-stat">
-          <div class="share-stat-val" style="color:${stats.wr>=50?'#4ade80':'#f87171'}">${stats.wr}%</div>
-          <div class="share-stat-lbl">Win Rate</div>
-        </div>
-        <div class="share-stat">
-          <div class="share-stat-val" style="color:#60a5fa">${stats.total}</div>
-          <div class="share-stat-lbl">Días activos</div>
-        </div>
-        <div class="share-stat">
-          <div class="share-stat-val" style="color:#60a5fa">${stats.ops}</div>
-          <div class="share-stat-lbl">Operaciones</div>
-        </div>
-      </div>
-      <div style="text-align:center;font-size:10px;color:#334155;margin-top:8px">Trading Journal App · ${new Date().toLocaleDateString('es-CL')}</div>
-    </div>`;
-}
-
-function downloadShareImage() {
-  const el = document.getElementById('shareCanvas');
-  if (!el) return;
-  // Use html2canvas if available, otherwise show print tip
-  if (typeof html2canvas !== 'undefined') {
-    html2canvas(el, { backgroundColor: '#0f1923', scale: 2 }).then(canvas => {
-      const a = document.createElement('a'); a.download = 'trading-journal-resumen.png';
-      a.href = canvas.toDataURL('image/png'); a.click();
-    });
-  } else {
-    // Fallback: open print dialog
-    const w = window.open('', '_blank');
-    w.document.write('<html><body style="background:#0f1923;display:flex;justify-content:center;padding:40px">' + el.outerHTML + '<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;">
-  <div style="flex:1"><div style="font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div>
-  <button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;cursor:pointer;">Instalar</button>
-  <button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button>
-</div>
-</body></html>');
-    w.document.close(); w.print();
-  }
-}
-
-// ── AI ANALYSIS ───────────────────────────────────────────────────────────────
-let aiTab = 'month';
-function setAiTab(tab) {
-  aiTab = tab;
-  ['day','week','month','year'].forEach(t => {
-    const el = document.getElementById('aiTab'+t.charAt(0).toUpperCase()+t.slice(1));
-    if(el) el.classList.toggle('active', t===tab);
-  });
-  runAiAnalysis();
-}
-
-function renderAiAutoSummary() {
-  // Auto insights (no API needed — pure data analysis)
-  const insights = generateLocalInsights();
-  const container = document.getElementById('aiInsights');
-  if (!container) return;
-  if (!insights.length) {
-    container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0">Registra más operaciones para ver análisis automáticos.</div>';
-    return;
-  }
-  container.innerHTML = insights.map(i => `<div class="ai-insight ${i.type}">${i.text}</div>`).join('');
-}
-
-function generateLocalInsights() {
-  const keys = monthKeys().sort();
-  if (keys.length < 2) return [];
-  const insights = [];
-
-  // Collect data
-  let total=0, wins=0, losses=0, sumWin=0, sumLoss=0;
-  let maxWStreak=0, maxLStreak=0, curW=0, curL=0;
-  let peak=0, running=0, maxDD=0;
-  let buyW=0,buyL=0,sellW=0,sellL=0;
-  const dayPnl = {};
-
-  keys.forEach(k => {
-    const d=state[k]; if(!d) return;
-    const p=parseFloat(d.pnl)||0, dow=new Date(k).getDay();
-    total+=p; running+=p;
-    if(p>peak) peak=running;
-    const dd=peak-running; if(dd>maxDD) maxDD=dd;
-    if(p>0){ wins++; sumWin+=p; curW++; curL=0; if(curW>maxWStreak)maxWStreak=curW;
-      if(d.side==='buy')buyW++; else if(d.side==='sell')sellW++; }
-    else if(p<0){ losses++; sumLoss+=Math.abs(p); curL++; curW=0; if(curL>maxLStreak)maxLStreak=curL;
-      if(d.side==='buy')buyL++; else if(d.side==='sell')sellL++; }
-    if(!dayPnl[dow]) dayPnl[dow]={sum:0,cnt:0};
-    dayPnl[dow].sum+=p; dayPnl[dow].cnt++;
-  });
-
-  const wr=keys.length?Math.round(wins/keys.length*100):0;
-  const avgW=wins?sumWin/wins:0; const avgL=losses?sumLoss/losses:0;
-  const ratio=avgL?avgW/avgL:0;
-
-  // Win rate insight
-  if(wr>=65) insights.push({type:'good', text:`🎯 Win rate del ${wr}% — excelente consistencia. Tu sistema está funcionando.`});
-  else if(wr<40) insights.push({type:'bad', text:`⚠️ Win rate del ${wr}% — por debajo del 40%. Revisa tu criterio de entrada.`});
-  else insights.push({type:'', text:`📊 Win rate del ${wr}% — dentro de rango normal. Ratio G/P: ${ratio.toFixed(2)}x.`});
-
-  // Ratio insight
-  if(ratio>=2) insights.push({type:'good', text:`💰 Excelente ratio ganancia/pérdida: ${ratio.toFixed(2)}x. Tus ganancias son ${ratio.toFixed(1)} veces tus pérdidas.`});
-  else if(ratio>0 && ratio<1) insights.push({type:'bad', text:`🔴 Ratio desfavorable: ${ratio.toFixed(2)}x. Tus pérdidas superan tus ganancias en tamaño. Ajusta tu RR.`});
-
-  // Streak
-  if(maxWStreak>=3) insights.push({type:'good', text:`🔥 Tu mejor racha ganadora fue de ${maxWStreak} días consecutivos.`});
-  if(maxLStreak>=3) insights.push({type:'warn', text:`🛑 Tuviste una racha perdedora de ${maxLStreak} días. Considera reducir size después de 2 pérdidas seguidas.`});
-
-  // Drawdown
-  if(maxDD>0) {
-    const ddPct = total>0 ? Math.round(maxDD/Math.abs(total+maxDD)*100) : 0;
-    if(ddPct>25) insights.push({type:'bad', text:`📉 Drawdown máximo de ${fmtSigned(-maxDD)} (${ddPct}%). Revisa tu gestión de riesgo.`});
-    else insights.push({type:'', text:`📉 Drawdown máximo controlado: ${fmtSigned(-maxDD)}.`});
-  }
-
-  // Best day of week
-  const days=['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
-  const bestDow=Object.entries(dayPnl).sort((a,b)=>b[1].sum-a[1].sum)[0];
-  const worstDow=Object.entries(dayPnl).sort((a,b)=>a[1].sum-b[1].sum)[0];
-  if(bestDow) insights.push({type:'good', text:`📅 Tu mejor día de la semana es el ${days[bestDow[0]]} con ${fmtSigned(bestDow[1].sum)} acumulado.`});
-  if(worstDow && worstDow[0]!==bestDow[0]) insights.push({type:'warn', text:`📅 Tu peor día es el ${days[worstDow[0]]}. Considera reducir exposición ese día.`});
-
-  // Buy vs Sell
-  const buyTotal=buyW+buyL, sellTotal=sellW+sellL;
-  if(buyTotal>2&&sellTotal>2) {
-    const buyWR=Math.round(buyW/buyTotal*100), sellWR=Math.round(sellW/sellTotal*100);
-    if(buyWR>sellWR+15) insights.push({type:'good', text:`📈 Rindes mejor en BUY (${buyWR}% win) que en SELL (${sellWR}% win). Considera priorizar largos.`});
-    else if(sellWR>buyWR+15) insights.push({type:'good', text:`📉 Rindes mejor en SELL (${sellWR}% win) que en BUY (${buyWR}% win). Considera priorizar cortos.`});
-  }
-
-  return insights;
-}
-
-async function runAiAnalysis() {
-  const container = document.getElementById('aiInsights');
-  if (!container) return;
-  container.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Analizando tus datos...</div>';
-
-  // Build context from actual trading data
-  const allKeys = Object.keys(state).filter(k=>k!=='meta'&&k.split('-').length===3).sort();
-  if (allKeys.length < 3) {
-    container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0">Necesitas al menos 3 días de operaciones para el análisis IA.</div>';
-    return;
-  }
-
-  // Gather stats for the selected period
-  let periodKeys = [];
-  const now = new Date();
-  if (aiTab==='day') {
-    const today = dayKey(now.getFullYear(),now.getMonth(),now.getDate());
-    periodKeys = [today].filter(k=>state[k]);
-  } else if (aiTab==='week') {
-    periodKeys = (selectedWeek||[]).filter(k=>state[k]);
-  } else if (aiTab==='month') {
-    periodKeys = monthKeys();
-  } else {
-    periodKeys = allKeys.filter(k=>{ const[y]=k.split('-'); return parseInt(y)===currentYear; });
-  }
-
-  let pnl=0,wins=0,losses=0,ops=0;
-  const tradeSummaries=[];
-  periodKeys.forEach(k=>{
-    const d=state[k]; if(!d) return;
-    const p=parseFloat(d.pnl)||0;
-    pnl+=p; ops+=parseInt(d.trades)||0;
-    if(p>0)wins++; else if(p<0)losses++;
-    tradeSummaries.push(`${k}: ${fmtSigned(p)} ${d.side||''} tags:[${(d.tags||[]).join(',')}] nota:"${d.note||''}"`);
-  });
-
-  const accName = accounts.find(a=>a.id===currentAccountId)?.name||'Mi cuenta';
-  const period = aiTab==='day'?'hoy':aiTab==='week'?'esta semana':aiTab==='month'?`${MONTHS_ES[currentMonth]} ${currentYear}`:`año ${currentYear}`;
-  const wr = periodKeys.length ? Math.round(wins/periodKeys.length*100) : 0;
-
-  const prompt = `Eres un coach de trading experto. Analiza estos datos de trading reales y da un reporte conciso y accionable en español.
-
-Cuenta: ${accName}
-Período: ${period}
-P&L: ${fmtSigned(pnl)}
-Win Rate: ${wr}%
-Días ganadores: ${wins}, Días perdedores: ${losses}
-Total operaciones: ${ops}
-
-Operaciones detalladas:
-${tradeSummaries.slice(-20).join('\n')}
-
-Da un análisis de máximo 5 puntos, siendo directo y específico. Incluye:
-1. Evaluación del rendimiento general
-2. Patrones que ves (días buenos/malos, setups que funcionan)  
-3. Áreas de mejora específicas
-4. Una recomendación concreta para la próxima sesión
-5. Una observación sobre disciplina/psicología basada en los datos
-
-Formato: bullet points cortos, máximo 2 líneas cada uno. Sin markdown, sin asteriscos.`;
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    if (!resp.ok) throw new Error('API error');
-    const data = await resp.json();
-    const text = data.content?.[0]?.text || '';
-
-    // Render as insights
-    const lines = text.split('\n').filter(l=>l.trim());
-    container.innerHTML = lines.map(l => {
-      const type = l.includes('⚠️')||l.includes('cuidado')||l.includes('riesgo') ? 'warn' :
-                   l.includes('✅')||l.includes('excelente')||l.includes('bien') ? 'good' :
-                   l.includes('❌')||l.includes('pérdida')||l.includes('problema') ? 'bad' : '';
-      return `<div class="ai-insight ${type}">${l}</div>`;
-    }).join('');
-
-    if (!lines.length) container.innerHTML = '<div style="color:var(--muted);font-size:12px">No se pudo generar análisis. Intenta de nuevo.</div>';
-
-  } catch(err) {
-    // Fallback to local analysis if API fails
-    const localInsights = generateLocalInsights();
-    container.innerHTML = localInsights.length
-      ? localInsights.map(i=>`<div class="ai-insight ${i.type}">${i.text}</div>`).join('')
-      : '<div style="color:var(--muted);font-size:12px">Análisis no disponible. Verifica tu conexión.</div>';
-  }
-}
-
-initUploadArea();
-initImportZone();
 render();
 
-// PWA Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.getRegistrations().then(function(regs) {
-      regs.forEach(function(r) { r.unregister(); });
-    }).then(function() {
-      navigator.serviceWorker.register('./sw.js');
-    });
-  });
-}
-var _dp = null;
-window.addEventListener('beforeinstallprompt', function(e) {
-  e.preventDefault(); _dp = e;
-  var b = document.getElementById('installBanner');
-  if (b) b.style.display = 'flex';
-});
-function pwaInstall() {
-  if (!_dp) return;
-  _dp.prompt();
-  _dp.userChoice.then(function() {
-    _dp = null;
-    var b = document.getElementById('installBanner');
-    if (b) b.style.display = 'none';
-  });
-}
-function pwaDismiss() {
-  var b = document.getElementById('installBanner');
-  if (b) b.style.display = 'none';
-}
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister())).then(()=>navigator.serviceWorker.register('./sw.js?v=7').catch(()=>{}));}
+let _dp=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();_dp=e;const b=document.getElementById('installBanner');if(b)b.style.display='flex';});
+function pwaInstall(){if(!_dp)return;_dp.prompt();_dp.userChoice.then(()=>{_dp=null;const b=document.getElementById('installBanner');if(b)b.style.display='none';});}
+function pwaDismiss(){const b=document.getElementById('installBanner');if(b)b.style.display='none';}
+
 </script>
-<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;">
-  <div style="flex:1"><div style="font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div>
-  <button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;cursor:pointer;">Instalar</button>
-  <button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button>
-</div>
+<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:linear-gradient(135deg,#252d38,#2d3748);border-top:1px solid #3d4f66;padding:14px 20px;align-items:center;gap:12px;flex-wrap:wrap;"><div style="flex:1"><div style="font-weight:700;font-size:14px;color:#f0f4f8">📲 Instalar Trading Journal</div></div><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:transparent;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer;">Ahora no</button></div>
 </body>
 </html>

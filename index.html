@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Trading Journal</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -76,17 +76,17 @@
   .theme-icon { font-size: 16px; transition: transform .4s; }
   body.light .theme-icon { transform: rotate(180deg); }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; min-height: 100vh; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; font-size: 15px; -webkit-font-smoothing: antialiased; }
   .app { max-width: 920px; margin: 0 auto; padding: 24px 16px 80px; }
 
   /* HEADER */
   .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
-  .header-left h1 { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+  .header-left h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
   .header-left .subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .month-stats { display: flex; gap: 10px; flex-wrap: wrap; }
   .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; min-width: 110px; text-align: center; }
-  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-  .stat-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .stat-value { font-size: 22px; font-weight: 800; margin-top: 4px; }
   .stat-value.positive { color: var(--green-light); }
   .stat-value.negative { color: var(--red); }
   .stat-value.neutral  { color: var(--accent); }
@@ -95,7 +95,7 @@
   .nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; }
   .nav-btn { background: none; border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 6px 14px; cursor: pointer; font-family: inherit; font-size: 13px; transition: background .15s; }
   .nav-btn:hover { background: var(--bg3); }
-  .nav-month { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
+  .nav-month { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 20px; font-weight: 800; }
 
   /* CALENDAR */
   .weekdays { display: grid; grid-template-columns: repeat(5, 1fr) 72px; gap: 6px; margin-bottom: 6px; }
@@ -109,7 +109,7 @@
     justify-content: center; gap: 4px; padding: 6px 4px;
   }
   .week-total-cell .wt-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; text-align: center; }
-  .week-total-cell .wt-value { font-size: 13px; font-weight: 700; text-align: center; line-height: 1.2; }
+  .week-total-cell .wt-value { font-size: 14px; font-weight: 800; text-align: center; line-height: 1.2; }
   .week-total-cell .wt-value.pos { color: var(--green-light); }
   .week-total-cell .wt-value.neg { color: var(--red); }
   .week-total-cell .wt-value.zero { color: var(--muted); }
@@ -133,10 +133,10 @@
   .day-cell.week-selected { border-color: rgba(56,139,253,.55) !important; box-shadow: 0 0 0 1px rgba(56,139,253,.2); }
 
   .cell-body { position: relative; z-index: 1; padding: 8px 9px 7px; display: flex; flex-direction: column; gap: 3px; flex: 1; }
-  .day-num { font-size: 13px; font-weight: 700; line-height: 1; color: var(--muted); }
+  .day-num { font-size: 14px; font-weight: 700; line-height: 1; color: var(--muted); }
   .day-cell.has-profit .day-num { color: var(--green-light); }
   .day-cell.has-loss   .day-num { color: var(--red); }
-  .day-pnl { font-size: 12px; font-weight: 600; flex: 1; }
+  .day-pnl { font-size: 13px; font-weight: 700; flex: 1; }
   .day-pnl.pos { color: var(--green-light); }
   .day-pnl.neg { color: var(--red); }
   .day-trades { font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 3px; }
@@ -154,7 +154,7 @@
 
   /* TRADES LIST */
   .trades-section { margin-top: 28px; }
-  .trades-section h3 { font-family:'Syne',sans-serif; font-size:13px; margin-bottom:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+  .trades-section h3 { font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; margin-bottom:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
   .trade-row {
     display: flex; align-items: center; background: var(--bg2); border: 1px solid var(--border);
     border-radius: 10px; margin-bottom: 8px; overflow: hidden; cursor: pointer; transition: border-color .15s;
@@ -167,9 +167,9 @@
   }
   .trade-thumb-count { position: absolute; bottom: 3px; right: 4px; background: rgba(0,0,0,.65); border-radius: 3px; padding: 1px 5px; font-size: 9px; color: #ccc; }
   .trade-info { display: flex; flex: 1; align-items: center; padding: 10px 14px; gap: 10px; flex-wrap: wrap; min-width: 0; }
-  .trade-date { color: var(--muted); min-width: 50px; font-size: 12px; }
-  .trade-note { flex: 1; color: var(--text); font-size: 12px; min-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .trade-pnl { font-weight: 700; min-width: 80px; text-align: right; font-size: 13px; }
+  .trade-date { color: var(--muted); min-width: 50px; font-size: 13px; }
+  .trade-note { flex: 1; color: var(--text); font-size: 13px; font-weight: 500; min-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trade-pnl { font-weight: 700; min-width: 80px; text-align: right; font-size: 14px; }
   .trade-pnl.pos { color: var(--green-light); }
   .trade-pnl.neg { color: var(--red); }
   .trade-ops { font-size: 11px; color: var(--muted); white-space: nowrap; }
@@ -182,11 +182,11 @@
   .modal-overlay.open { display: flex; }
   .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 24px; width: 100%; max-width: 480px; max-height: 92vh; overflow-y: auto; animation: fadeUp .2s ease; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-  .modal h2 { font-family:'Syne',sans-serif; font-size:17px; margin-bottom:18px; display:flex; align-items:center; gap:8px; }
+  .modal h2 { font-family:'Plus Jakarta Sans',sans-serif; font-size:17px; margin-bottom:18px; display:flex; align-items:center; gap:8px; }
   .modal label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; display: block; margin-bottom: 4px; }
   .modal input[type=text], .modal input[type=number] {
     width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text);
-    border-radius: 8px; padding: 10px 12px; font-family: inherit; font-size: 13px; margin-bottom: 14px;
+    border-radius: 8px; padding: 11px 14px; font-family: inherit; font-size: 14px; margin-bottom: 14px;
     outline: none; transition: border-color .15s;
   }
   .modal input:focus { border-color: var(--accent); }
@@ -245,7 +245,7 @@
     width: 28px; height: 28px; background: rgba(56,139,253,.15); border: 1px solid rgba(56,139,253,.3);
     border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px;
   }
-  .chart-toggle-btn .btn-label { flex: 1; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+  .chart-toggle-btn .btn-label { flex: 1; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
   .chart-toggle-btn .btn-chevron { font-size: 12px; color: var(--muted); transition: transform .3s; }
   .chart-toggle-btn.open .btn-chevron { transform: rotate(180deg); }
 
@@ -308,7 +308,7 @@
   }
   .analytics-toggle-btn:hover { border-color: var(--accent); background: var(--bg3); }
   .analytics-toggle-btn .btn-icon { width: 28px; height: 28px; background: rgba(250,204,21,.12); border: 1px solid rgba(250,204,21,.25); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
-  .analytics-toggle-btn .btn-label { flex: 1; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+  .analytics-toggle-btn .btn-label { flex: 1; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
   .analytics-toggle-btn .btn-chevron { font-size: 12px; color: var(--muted); transition: transform .3s; }
   .analytics-toggle-btn.open .btn-chevron { transform: rotate(180deg); }
 
@@ -323,7 +323,7 @@
   .metric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 10px; margin-bottom: 20px; }
   .metric-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
   .metric-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .metric-value { font-size: 18px; font-weight: 700; }
+  .metric-value { font-size: 20px; font-weight: 800; }
   .metric-value.pos { color: var(--green-light); }
   .metric-value.neg { color: var(--red); }
   .metric-value.gold { color: #facc15; }
@@ -423,9 +423,9 @@
   /* ── SHARE MODAL ── */
   .share-preview {
     background: #0f1923; border-radius: 12px; padding: 20px;
-    margin-bottom: 14px; font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 14px; font-family: 'Inter', sans-serif;
   }
-  .share-preview h3 { font-family: 'Syne',sans-serif; font-size:16px; margin-bottom:12px; color:#f0f4f8; }
+  .share-preview h3 { font-family: 'Plus Jakarta Sans',sans-serif; font-size:16px; margin-bottom:12px; color:#f0f4f8; }
   .share-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-bottom: 12px; }
   .share-stat { background: rgba(255,255,255,.05); border-radius: 8px; padding: 10px; text-align: center; }
   .share-stat-val { font-size: 18px; font-weight: 700; }
@@ -436,7 +436,7 @@
   .ai-panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
   .ai-badge { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; border-radius: 8px; padding: 4px 10px; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
   .ai-summary { font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
-  .ai-insight { background: var(--bg3); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 8px; font-size: 12px; line-height: 1.6; }
+  .ai-insight { background: var(--bg3); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; font-size: 13px; line-height: 1.7; font-weight: 500; }
   .ai-insight.warn { border-left-color: #facc15; }
   .ai-insight.good { border-left-color: var(--green-light); }
   .ai-insight.bad  { border-left-color: var(--red); }
@@ -611,7 +611,7 @@
   <!-- AI ANALYSIS PANEL -->
   <div class="ai-panel" id="aiPanel">
     <div class="ai-panel-header">
-      <span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Análisis IA</span>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700">Análisis IA</span>
       <span class="ai-badge">✦ INTELIGENCIA</span>
     </div>
     <div class="ai-report-tabs">
@@ -1327,12 +1327,12 @@ function renderChart() {
     scales: {
       x: {
         grid: { color: 'rgba(48,54,61,.6)', drawBorder: false },
-        ticks: { color: MUTED, font: { family: 'JetBrains Mono', size: 10 }, maxRotation: 45 }
+        ticks: { color: MUTED, font: { family: 'Inter', size: 11 }, maxRotation: 45 }
       },
       y: {
         grid: { color: 'rgba(48,54,61,.6)', drawBorder: false },
         ticks: {
-          color: MUTED, font: { family: 'JetBrains Mono', size: 10 },
+          color: MUTED, font: { family: 'Inter', size: 11 },
           callback: v => (v >= 0 ? '+$' : '-$') + Math.abs(v).toLocaleString()
         }
       }
@@ -1505,7 +1505,7 @@ function renderChart() {
           ...commonOptions.plugins,
           legend: {
             display: true,
-            labels: { color: MUTED, font: { family: 'JetBrains Mono', size: 10 }, boxWidth: 12 }
+            labels: { color: MUTED, font: { family: 'Inter', size: 11 }, boxWidth: 12 }
           },
           tooltip: {
             ...commonOptions.plugins.tooltip,
@@ -1953,7 +1953,7 @@ function buildShare(mode) {
   wrap.innerHTML = `
     <div class="share-preview" id="shareCanvas">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#f0f4f8">Trading Journal</div>
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#f0f4f8">Trading Journal</div>
         <div style="font-size:11px;color:#64748b;margin-left:auto">${accName}</div>
       </div>
       <div style="font-size:13px;color:#94a3b8;margin-bottom:12px">${title}</div>
@@ -2193,6 +2193,6 @@ function pwaInstall(){if(!_dp)return;_dp.prompt();_dp.userChoice.then(function()
 function pwaDismiss(){var b=document.getElementById('installBanner');if(b)b.style.display='none';}
 </script>
 
-<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:#252d38;border-top:1px solid #3d4f66;padding:12px 16px;align-items:center;gap:10px;flex-wrap:wrap;"><span style="flex:1;font-weight:700;font-size:13px;color:#f0f4f8">Trading Journal — Instalar app</span><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;">Instalar</button><button onclick="pwaDismiss()" style="background:none;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer;">×</button></div>
+<div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:#252d38;border-top:1px solid #3d4f66;padding:12px 16px;align-items:center;gap:10px;flex-wrap:wrap;"><span style="flex:1;font-weight:700;font-size:14px;color:#f0f4f8">Trading Journal</span><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:600;">Instalar</button><button onclick="pwaDismiss()" style="background:none;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;">×</button></div>
 </body>
 </html>

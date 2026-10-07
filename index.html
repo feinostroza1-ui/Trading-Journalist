@@ -449,6 +449,102 @@
   .ai-tab { background: var(--bg3); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 5px 12px; font-family: inherit; font-size: 11px; cursor: pointer; transition: all .15s; }
   .ai-tab.active { background: rgba(99,102,241,.2); border-color: #6366f1; color: #a5b4fc; }
 
+
+  /* ── CONSOLIDATED DASHBOARD ── */
+  .consolidated-section { margin-top: 28px; }
+  .consolidated-toggle-btn {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(139,92,246,.10));
+    border: 1px solid rgba(99,102,241,.35); border-radius: 10px;
+    padding: 13px 18px; cursor: pointer; font-family: inherit; color: var(--text);
+    transition: all .2s; text-align: left;
+  }
+  .consolidated-toggle-btn:hover { border-color: #6366f1; background: linear-gradient(135deg, rgba(99,102,241,.25), rgba(139,92,246,.18)); }
+  .consolidated-toggle-btn .btn-icon { width: 28px; height: 28px; background: rgba(99,102,241,.2); border: 1px solid rgba(99,102,241,.4); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+  .consolidated-toggle-btn .btn-label { flex: 1; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+  .consolidated-toggle-btn .btn-chevron { font-size: 12px; color: var(--muted); transition: transform .3s; }
+  .consolidated-toggle-btn.open .btn-chevron { transform: rotate(180deg); }
+
+  .consolidated-panel {
+    background: var(--bg2); border: 1px solid rgba(99,102,241,.25); border-top: none;
+    border-radius: 0 0 10px 10px; overflow: hidden;
+    max-height: 0; transition: max-height .4s ease, padding .3s ease; padding: 0 16px;
+  }
+  .consolidated-panel.open { max-height: 900px; padding: 20px 16px; }
+
+  /* Total stats bar */
+  .cons-totals { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 10px; margin-bottom: 20px; }
+  .cons-total-card { background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(139,92,246,.08)); border: 1px solid rgba(99,102,241,.2); border-radius: 10px; padding: 14px 16px; text-align: center; }
+  .cons-total-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
+  .cons-total-value { font-size: 22px; font-weight: 800; }
+
+  /* Account comparison table */
+  .cons-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+  .cons-table th { text-align: left; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  .cons-table td { padding: 10px; border-bottom: 1px solid rgba(99,102,241,.08); }
+  .cons-table tr:last-child td { border-bottom: none; }
+  .cons-table tr:hover td { background: rgba(99,102,241,.05); }
+  .cons-acc-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; flex-shrink: 0; }
+
+  /* Equity chart */
+  .cons-chart-wrap { height: 220px; position: relative; margin-bottom: 8px; }
+  .cons-an-title { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: 600; }
+
+
+  /* ── CONSOLIDATED DASHBOARD ── */
+  .consolidated-section { margin-top: 28px; }
+  .consolidated-toggle-btn {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    background: linear-gradient(135deg, var(--bg2), var(--bg3));
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 18px; cursor: pointer; font-family: inherit; color: var(--text);
+    transition: border-color .15s; text-align: left;
+  }
+  .consolidated-toggle-btn:hover { border-color: var(--accent); }
+  .consolidated-toggle-btn .btn-icon {
+    width: 30px; height: 30px; background: linear-gradient(135deg,#6366f1,#8b5cf6);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 15px;
+  }
+  .consolidated-toggle-btn .btn-label {
+    flex: 1; font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px;
+  }
+  .consolidated-toggle-btn .btn-chevron { font-size: 12px; color: var(--muted); transition: transform .3s; }
+  .consolidated-toggle-btn.open .btn-chevron { transform: rotate(180deg); }
+
+  .consolidated-panel {
+    background: var(--bg2); border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 10px 10px; overflow: hidden;
+    max-height: 0; transition: max-height .4s ease, padding .3s ease; padding: 0 16px;
+  }
+  .consolidated-panel.open { max-height: 900px; padding: 20px 16px 24px; }
+
+  /* Summary cards row */
+  .cons-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 10px; margin-bottom: 20px; }
+  .cons-stat-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; text-align: center;
+  }
+  .cons-stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 6px; }
+  .cons-stat-value { font-size: 22px; font-weight: 800; }
+
+  /* Per-account breakdown */
+  .cons-accounts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .cons-account-row {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px;
+  }
+  .cons-account-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .cons-account-name { font-weight: 700; font-size: 13px; flex: 1; }
+  .cons-account-pnl { font-size: 14px; font-weight: 800; min-width: 90px; text-align: right; }
+  .cons-account-wr  { font-size: 11px; color: var(--muted); min-width: 60px; text-align: right; }
+  .cons-account-days { font-size: 11px; color: var(--muted); min-width: 50px; text-align: right; }
+
+  /* Chart */
+  .cons-chart-wrap { position: relative; height: 220px; width: 100%; }
+
   @media(max-width:580px){
     .day-cell { min-height: 66px; }
     .cell-body { padding: 6px 6px 5px; }
@@ -624,10 +720,72 @@
     <button class="ai-btn" onclick="runAiAnalysis()" style="margin-top:10px">✦ Analizar mis datos</button>
   </div>
 
+  <!-- CONSOLIDATED DASHBOARD -->
+  <div class="consolidated-section">
+    <button class="consolidated-toggle-btn" id="consToggleBtn" onclick="toggleConsolidated()">
+      <div class="btn-icon">🏦</div>
+      <span class="btn-label">Consolidado — Todas las cuentas</span>
+      <span id="consSummaryLabel" style="font-size:12px;color:var(--muted);margin-right:8px"></span>
+      <span class="btn-chevron">▼</span>
+    </button>
+    <div class="consolidated-panel" id="consolidatedPanel">
+
+      <!-- Summary stats -->
+      <div class="cons-stats" id="consStats"></div>
+
+      <!-- Per-account breakdown -->
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:8px">Desglose por cuenta</div>
+      <div class="cons-accounts" id="consAccounts"></div>
+
+      <!-- Multi-account equity chart -->
+      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:10px">Curva de equity — todas las cuentas</div>
+      <div class="cons-chart-wrap">
+        <canvas id="consChart"></canvas>
+      </div>
+
+    </div>
+  </div>
+
   <!-- TRADES LIST -->
   <div class="trades-section">
     <h3>Operaciones del mes</h3>
     <div id="tradesList"></div>
+  </div>
+
+  <!-- CONSOLIDATED DASHBOARD -->
+  <div class="consolidated-section">
+    <button class="consolidated-toggle-btn" id="consToggleBtn" onclick="toggleConsolidated()">
+      <div class="btn-icon">🌐</div>
+      <span class="btn-label">Dashboard consolidado — Todas las cuentas</span>
+      <span class="btn-chevron">▼</span>
+    </button>
+    <div class="consolidated-panel" id="consPanel">
+
+      <!-- Total stats -->
+      <div class="cons-an-title" style="margin-top:4px">Resumen total</div>
+      <div class="cons-totals" id="consTotals"></div>
+
+      <!-- Per-account comparison table -->
+      <div class="cons-an-title">Comparativa por cuenta</div>
+      <table class="cons-table" id="consTable">
+        <thead><tr>
+          <th>Cuenta</th>
+          <th>P&amp;L Mes</th>
+          <th>P&amp;L Año</th>
+          <th>Días</th>
+          <th>Win Rate</th>
+          <th>Ops</th>
+        </tr></thead>
+        <tbody id="consTableBody"></tbody>
+      </table>
+
+      <!-- Multi-account equity chart -->
+      <div class="cons-an-title">Curva de equity por cuenta — Año <span id="consYear"></span></div>
+      <div class="cons-chart-wrap">
+        <canvas id="consChart"></canvas>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -835,7 +993,12 @@ function render() {
   renderWeekPanel();
   if (chartOpen) renderChart();
   if (analyticsOpen) renderAnalytics();
+  if (typeof consOpen !== "undefined" && consOpen) renderConsolidated();
+  if (typeof updateConsSummaryLabel !== "undefined") updateConsSummaryLabel();
+  if (consOpen) renderConsolidated();
   renderAiAutoSummary();
+  updateConsSummaryLabel();
+  if (typeof consOpen !== 'undefined' && consOpen) renderConsolidated();
   // Update summary label in button even when closed
   const data = getChartData();
   if (data) {
@@ -1244,6 +1407,9 @@ function toggleChart() {
   panel.classList.toggle('open', chartOpen);
   if (chartOpen) renderChart();
   if (analyticsOpen) renderAnalytics();
+  if (typeof consOpen !== "undefined" && consOpen) renderConsolidated();
+  if (typeof updateConsSummaryLabel !== "undefined") updateConsSummaryLabel();
+  if (consOpen) renderConsolidated();
 }
 
 function setChartMode(mode) {
@@ -1544,6 +1710,9 @@ function toggleAnalytics() {
   document.getElementById('analyticsToggleBtn').classList.toggle('open', analyticsOpen);
   document.getElementById('analyticsPanel').classList.toggle('open', analyticsOpen);
   if (analyticsOpen) renderAnalytics();
+  if (typeof consOpen !== "undefined" && consOpen) renderConsolidated();
+  if (typeof updateConsSummaryLabel !== "undefined") updateConsSummaryLabel();
+  if (consOpen) renderConsolidated();
 }
 
 function allKeys() {
@@ -2243,6 +2412,315 @@ Formato: bullet points cortos, máximo 2 líneas cada uno. Sin markdown, sin ast
 }
 
 initUploadArea();
+
+// ── CONSOLIDATED DASHBOARD ───────────────────────────────────────────────────
+var consOpen  = false;
+var consChart = null;
+var ACC_COLORS = ['#6366f1','#22c55e','#f59e0b','#ef4444','#06b6d4','#a855f7','#f97316','#ec4899'];
+
+function toggleConsolidated() {
+  consOpen = !consOpen;
+  document.getElementById('consToggleBtn').classList.toggle('open', consOpen);
+  document.getElementById('consPanel').classList.toggle('open', consOpen);
+  if (consOpen) renderConsolidated();
+}
+
+function getAllAccountData(accId) {
+  try { return JSON.parse(localStorage.getItem(accId + '_' + BASE_STORE_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+
+function getAccountStats(data) {
+  var monthK = Object.keys(data).filter(function(k) {
+    if (k === 'meta' || k.split('-').length !== 3) return false;
+    var p = k.split('-').map(Number); return p[0] === currentYear && p[1] === currentMonth + 1;
+  });
+  var yearK = Object.keys(data).filter(function(k) {
+    if (k === 'meta' || k.split('-').length !== 3) return false;
+    return parseInt(k.split('-')[0]) === currentYear;
+  });
+  var monthPnl=0, yearPnl=0, wins=0, days=0, ops=0;
+  monthK.forEach(function(k){ var d=data[k]; if(!d)return; monthPnl+=parseFloat(d.pnl)||0; ops+=parseInt(d.trades)||0; });
+  yearK.forEach(function(k){ var d=data[k]; if(!d)return; var p=parseFloat(d.pnl)||0; yearPnl+=p; days++; if(p>0)wins++; });
+  return { monthPnl: monthPnl, yearPnl: yearPnl, days: days, wins: wins, ops: ops, wr: days?Math.round(wins/days*100):0 };
+}
+
+function getYearlyEquity(data) {
+  var running = 0;
+  return Array.from({length:12}, function(_,m) {
+    Object.keys(data).forEach(function(k) {
+      if (k==='meta'||k.split('-').length!==3) return;
+      var p=k.split('-').map(Number);
+      if (p[0]===currentYear && p[1]===m+1) running+=parseFloat(data[k]?.pnl)||0;
+    });
+    return parseFloat(running.toFixed(2));
+  });
+}
+
+function renderConsolidated() {
+  document.getElementById('consYear').textContent = currentYear;
+  var accStats = accounts.map(function(acc, i) {
+    var data   = getAllAccountData(acc.id);
+    var stats  = getAccountStats(data);
+    var equity = getYearlyEquity(data);
+    return { acc:acc, stats:stats, equity:equity, color:ACC_COLORS[i%ACC_COLORS.length] };
+  });
+
+  var totalMonthPnl = accStats.reduce(function(s,a){return s+a.stats.monthPnl;},0);
+  var totalYearPnl  = accStats.reduce(function(s,a){return s+a.stats.yearPnl;},0);
+  var totalDays     = accStats.reduce(function(s,a){return s+a.stats.days;},0);
+  var totalWins     = accStats.reduce(function(s,a){return s+a.stats.wins;},0);
+  var totalOps      = accStats.reduce(function(s,a){return s+a.stats.ops;},0);
+  var combinedWR    = totalDays?Math.round(totalWins/totalDays*100):0;
+
+  var totalsData = [
+    {label:'P&L Este Mes', value:fmtSigned(totalMonthPnl), cls:totalMonthPnl>=0?'positive':'negative'},
+    {label:'P&L Este Año', value:fmtSigned(totalYearPnl),  cls:totalYearPnl>=0?'positive':'negative'},
+    {label:'Win Rate',     value:combinedWR+'%',            cls:combinedWR>=50?'positive':'negative'},
+    {label:'Días totales', value:totalDays,                 cls:'neutral'},
+    {label:'Cuentas',      value:accounts.length,           cls:'neutral'},
+    {label:'Ops totales',  value:totalOps,                  cls:'neutral'}
+  ];
+  document.getElementById('consTotals').innerHTML = totalsData.map(function(s) {
+    return '<div class="cons-total-card"><div class="cons-total-label">'+s.label+'</div><div class="cons-total-value stat-value '+s.cls+'">'+s.value+'</div></div>';
+  }).join('');
+
+  document.getElementById('consTableBody').innerHTML = accStats.map(function(a) {
+    var mp=a.stats.monthPnl>=0, yp=a.stats.yearPnl>=0;
+    return '<tr>'
+      +'<td><span class="cons-acc-dot" style="background:'+a.color+'"></span><strong>'+a.acc.name+'</strong></td>'
+      +'<td style="font-weight:700;color:'+(mp?'var(--green-light)':'var(--red)')+'">'+fmtSigned(a.stats.monthPnl)+'</td>'
+      +'<td style="font-weight:700;color:'+(yp?'var(--green-light)':'var(--red)')+'">'+fmtSigned(a.stats.yearPnl)+'</td>'
+      +'<td style="color:var(--muted)">'+a.stats.days+'</td>'
+      +'<td style="font-weight:600;color:'+(a.stats.wr>=50?'var(--green-light)':'var(--red)')+'">'+a.stats.wr+'%</td>'
+      +'<td style="color:var(--muted)">'+a.stats.ops+'</td>'
+      +'</tr>';
+  }).join('');
+
+  if (consChart) { consChart.destroy(); consChart = null; }
+  var monthLabels = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  var ctx = document.getElementById('consChart').getContext('2d');
+
+  var combinedEquity = Array.from({length:12}, function(_,m) {
+    return parseFloat(accStats.reduce(function(s,a){return s+a.equity[m];},0).toFixed(2));
+  });
+
+  var datasets = [{
+    label:'🌐 Total combinado',
+    data: combinedEquity,
+    borderColor:'#a855f7', borderWidth:3,
+    borderDash:[6,3],
+    pointBackgroundColor:'#a855f7', pointRadius:4, pointHoverRadius:6,
+    fill:false, tension:0.35, order:0
+  }].concat(accStats.map(function(a) {
+    return {
+      label: a.acc.name, data: a.equity,
+      borderColor: a.color, borderWidth:2,
+      pointBackgroundColor: a.color, pointRadius:3, pointHoverRadius:5,
+      fill:false, tension:0.35, order:1
+    };
+  }));
+
+  consChart = new Chart(ctx, {
+    type:'line',
+    data:{ labels:monthLabels, datasets:datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      animation:{ duration:600, easing:'easeOutQuart' },
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ display:true, position:'bottom', labels:{ color:'#94a3b8', font:{family:'Inter',size:11}, boxWidth:14, padding:12, usePointStyle:true, pointStyle:'circle' } },
+        tooltip:{
+          backgroundColor:'#21262d', borderColor:'#30363d', borderWidth:1,
+          titleColor:'#e6edf3', bodyColor:'#e6edf3', padding:10,
+          callbacks:{ label:function(ctx){ var v=ctx.parsed.y; return ' '+ctx.dataset.label+': '+(v>=0?'+$':'-$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); } }
+        }
+      },
+      scales:{
+        x:{ grid:{color:'rgba(99,102,241,.1)'}, ticks:{color:'#94a3b8',font:{family:'Inter',size:11}} },
+        y:{ grid:{color:'rgba(99,102,241,.1)'}, ticks:{color:'#94a3b8',font:{family:'Inter',size:11}, callback:function(v){return(v>=0?'+$':'-$')+Math.abs(v).toLocaleString();}} }
+      }
+    }
+  });
+}
+
+// ── CONSOLIDATED DASHBOARD ────────────────────────────────────────────────────
+var consOpen = false;
+var consChartInstance = null;
+
+var ACC_COLORS = [
+  '#60a5fa','#4ade80','#f472b6','#fb923c',
+  '#a78bfa','#34d399','#facc15','#f87171'
+];
+
+function toggleConsolidated() {
+  consOpen = !consOpen;
+  var btn = document.getElementById('consToggleBtn');
+  var panel = document.getElementById('consolidatedPanel');
+  if (btn) btn.classList.toggle('open', consOpen);
+  if (panel) panel.classList.toggle('open', consOpen);
+  if (consOpen) renderConsolidated();
+}
+
+function getAccountData(accId) {
+  var prefix = accId + '_' + BASE_STORE_KEY;
+  var accState = {};
+  try { accState = JSON.parse(localStorage.getItem(prefix)) || {}; } catch(e) {}
+  var keys = Object.keys(accState).filter(function(k) {
+    return k !== 'meta' && k.split('-').length === 3;
+  }).sort();
+
+  var total=0, wins=0, losses=0, days=0, ops=0, running=0;
+  var equityPoints = [];
+
+  keys.forEach(function(k) {
+    var d = accState[k]; if (!d) return;
+    var pnl = parseFloat(d.pnl) || 0;
+    total += pnl; running += pnl; running = parseFloat(running.toFixed(2));
+    ops   += parseInt(d.trades) || 0; days++;
+    if (pnl > 0) wins++; else if (pnl < 0) losses++;
+    equityPoints.push({ date: k, equity: running });
+  });
+
+  return { total:total, wins:wins, losses:losses, days:days, ops:ops,
+    equityPoints:equityPoints, wr: days ? Math.round(wins/days*100) : 0 };
+}
+
+function renderConsolidated() {
+  var accDataList = accounts.map(function(acc, idx) {
+    return Object.assign({}, acc, {
+      color: ACC_COLORS[idx % ACC_COLORS.length],
+      data: getAccountData(acc.id)
+    });
+  });
+
+  var totalPnl=0, totalDays=0, totalWins=0, totalOps=0;
+  accDataList.forEach(function(a) {
+    totalPnl  += a.data.total;
+    totalDays += a.data.days;
+    totalWins += a.data.wins;
+    totalOps  += a.data.ops;
+  });
+  var totalWR = totalDays ? Math.round(totalWins/totalDays*100) : 0;
+
+  var lbl = document.getElementById('consSummaryLabel');
+  if (lbl) { lbl.textContent = fmtSigned(totalPnl); lbl.style.color = totalPnl>=0?'var(--green-light)':'var(--red)'; }
+
+  var statsEl = document.getElementById('consStats');
+  if (statsEl) {
+    var stats = [
+      { label:'P&L Total',    value:fmtSigned(totalPnl), color: totalPnl>=0?'var(--green-light)':'var(--red)' },
+      { label:'Win Rate',     value:totalWR+'%',          color: totalWR>=50?'var(--green-light)':'var(--red)' },
+      { label:'Días totales', value:totalDays,             color:'var(--accent)' },
+      { label:'Operaciones',  value:totalOps,              color:'var(--accent)' },
+      { label:'Cuentas',      value:accounts.length,       color:'#a78bfa' }
+    ];
+    statsEl.innerHTML = stats.map(function(s) {
+      return '<div class="cons-stat-card"><div class="cons-stat-label">'+s.label+'</div><div class="cons-stat-value" style="color:'+s.color+'">'+s.value+'</div></div>';
+    }).join('');
+  }
+
+  var accEl = document.getElementById('consAccounts');
+  if (accEl) {
+    accEl.innerHTML = accDataList.map(function(a) {
+      var d = a.data;
+      var pnlColor = d.total>=0?'var(--green-light)':'var(--red)';
+      var wrColor  = d.wr>=50?'var(--green-light)':'var(--red)';
+      return '<div class="cons-account-row">'+
+        '<div class="cons-account-dot" style="background:'+a.color+'"></div>'+
+        '<div class="cons-account-name">'+a.name+'</div>'+
+        '<div class="cons-account-days">'+d.days+' días</div>'+
+        '<div class="cons-account-wr" style="color:'+wrColor+'">'+d.wr+'% WR</div>'+
+        '<div class="cons-account-pnl" style="color:'+pnlColor+'">'+fmtSigned(d.total)+'</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  renderConsChart(accDataList);
+}
+
+function renderConsChart(accDataList) {
+  var canvas = document.getElementById('consChart');
+  if (!canvas) return;
+  if (consChartInstance) { consChartInstance.destroy(); consChartInstance = null; }
+
+  var allDates = {};
+  accDataList.forEach(function(a) {
+    a.data.equityPoints.forEach(function(p) { allDates[p.date] = true; });
+  });
+  var labels = Object.keys(allDates).sort();
+  if (!labels.length) {
+    canvas.parentElement.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">Sin datos en ninguna cuenta</div>';
+    return;
+  }
+
+  var datasets = accDataList.filter(function(a){ return a.data.equityPoints.length>0; }).map(function(a) {
+    var epMap = {};
+    a.data.equityPoints.forEach(function(p){ epMap[p.date] = p.equity; });
+    var last = 0;
+    var data = labels.map(function(d) {
+      if (epMap[d] !== undefined) last = epMap[d];
+      return last;
+    });
+    return {
+      label: a.name, data: data,
+      borderColor: a.color, backgroundColor: a.color+'18',
+      borderWidth: 2.5, fill: false, tension: 0.3,
+      pointRadius: labels.length>30?0:3, pointHoverRadius:6, pointBackgroundColor:a.color
+    };
+  });
+
+  // Combined total line
+  var combined = labels.map(function(_,i) {
+    return datasets.reduce(function(sum,ds){ return sum+(ds.data[i]||0); }, 0);
+  });
+  datasets.unshift({
+    label:'📊 Total combinado', data:combined,
+    borderColor:'#ffffff', borderWidth:3, borderDash:[6,3],
+    pointRadius:0, pointHoverRadius:7, fill:false, tension:0.3
+  });
+
+  var MUTED = '#94a3b8';
+  consChartInstance = new Chart(canvas.getContext('2d'), {
+    type:'line',
+    data:{
+      labels: labels.map(function(d){ var p=d.split('-'); return p[2]+'/'+p[1]; }),
+      datasets: datasets
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      animation:{duration:600},
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{
+          display:true, position:'bottom',
+          labels:{color:MUTED,font:{family:'Inter',size:11},boxWidth:14,padding:12,usePointStyle:true,pointStyle:'circle'}
+        },
+        tooltip:{
+          backgroundColor:'#21262d',borderColor:'#30363d',borderWidth:1,
+          titleColor:'#e6edf3',bodyColor:'#e6edf3',padding:10,
+          callbacks:{label:function(ctx){
+            var v=ctx.parsed.y;
+            return ' '+ctx.dataset.label+': '+(v>=0?'+$':'-$')+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+          }}
+        }
+      },
+      scales:{
+        x:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:MUTED,font:{family:'Inter',size:10},maxTicksLimit:10,maxRotation:45}},
+        y:{grid:{color:'rgba(48,54,61,.5)'},ticks:{color:MUTED,font:{family:'Inter',size:10},callback:function(v){return(v>=0?'+$':'-$')+Math.abs(v).toLocaleString();}}}
+      }
+    }
+  });
+}
+
+function updateConsSummaryLabel() {
+  if (accounts.length < 2) return;
+  var totalPnl = 0;
+  accounts.forEach(function(acc){ totalPnl += getAccountData(acc.id).total; });
+  var lbl = document.getElementById('consSummaryLabel');
+  if (lbl) { lbl.textContent = fmtSigned(totalPnl); lbl.style.color = totalPnl>=0?'var(--green-light)':'var(--red)'; }
+}
+
 initImportZone();
 render();
 if('serviceWorker'in navigator){window.addEventListener('load',function(){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(x){x.unregister();});}).then(function(){navigator.serviceWorker.register('./sw.js');});});}

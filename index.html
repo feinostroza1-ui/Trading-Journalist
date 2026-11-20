@@ -564,7 +564,7 @@
   <div class="header">
     <div class="header-left">
       <h1>Trading Journal</h1>
-      <div class="subtitle">Registro visual de operaciones · doble clic en día = semana</div>
+      <div class="subtitle">Registro visual de operaciones · doble clic en día = semana · v8.1</div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">
@@ -841,7 +841,7 @@
   <div class="modal" style="max-width:500px">
     <h2>📥 Importar reporte MT5</h2>
     <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6">
-      En MT5: <strong>Historia → clic derecho → Guardar como reporte → HTML</strong><br>
+      En MT5: <strong>Historial → clic derecho → Informe → HTML</strong><br>
       Selecciona el archivo HTML exportado y los trades se importarán automáticamente al mes correspondiente.
     </p>
     <div class="import-zone" id="importZone">
@@ -2736,6 +2736,26 @@ function updateConsSummaryLabel() {
   var lbl = document.getElementById('consSummaryLabel');
   if (lbl) { lbl.textContent = fmtSigned(totalPnl); lbl.style.color = totalPnl>=0?'var(--green-light)':'var(--red)'; }
 }
+
+// ── LIMPIEZA ÚNICA: borra días con P&L imposible creados por el importador MT5 antiguo ──
+(function cleanBadImports() {
+  let removed = 0;
+  accounts.forEach(acc => {
+    const key = acc.id + '_' + BASE_STORE_KEY;
+    const st = acc.id === currentAccountId ? state : (function(){ try { return JSON.parse(localStorage.getItem(key)) || {}; } catch(e) { return {}; } })();
+    let n = 0;
+    Object.keys(st).forEach(k => {
+      const d = st[k];
+      if (/^\d{4}-\d{2}-\d{2}$/.test(k) && d && d.note === 'Importado MT5' && Math.abs(parseFloat(d.pnl) || 0) > 1000000) { delete st[k]; n++; }
+    });
+    if (n) {
+      removed += n;
+      if (acc.id === currentAccountId) saveState();
+      else try { localStorage.setItem(key, JSON.stringify(st)); } catch(e) {}
+    }
+  });
+  if (removed) setTimeout(() => alert(`🧹 Se limpiaron ${removed} días con montos erróneos de una importación anterior.\nVuelve a importar tu reporte MT5 para cargar los valores correctos.`), 500);
+})();
 
 initImportZone();
 render();

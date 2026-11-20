@@ -2108,6 +2108,19 @@ function processImportFile(file) {
         positions++;
       });
 
+      // Limpia días de importaciones anteriores (nota 'Importado MT5') dentro del
+      // período del reporte que ya no corresponden a ningún cierre.
+      const keys = Object.keys(dateMap).sort();
+      let cleaned = 0;
+      if (keys.length) {
+        const first = doc.body.textContent.match(/\d{4}\.\d{2}\.\d{2}/g)
+          .map(s => s.replace(/\./g, '-')).sort()[0];
+        Object.keys(state).forEach(k => {
+          if (/^\d{4}-\d{2}-\d{2}$/.test(k) && k >= first && k <= keys[keys.length-1] && !dateMap[k]
+              && state[k].note === 'Importado MT5' && !(state[k].images || []).length) { delete state[k]; cleaned++; }
+        });
+      }
+
       // Reemplaza (no suma) los días del reporte: re-importar no duplica.
       // Notas, tags y pantallazos se mantienen.
       let imported = 0;

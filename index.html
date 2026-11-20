@@ -555,9 +555,58 @@
     .trade-thumb { width: 52px; min-width: 52px; height: 44px; font-size: 16px; }
     .modal { padding: 18px; }
   }
+  /* ── LOGIN / SYNC ── */
+  #authOverlay { position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 70% 20%, #0f2a20 0%, #0b0f14 55%); display: none; align-items: center; justify-content: center; padding: 20px; }
+  #authOverlay.show { display: flex; }
+  .auth-card { width: 100%; max-width: 380px; background: #141a21; border: 1px solid #23303d; border-radius: 18px; padding: 28px 24px; box-shadow: 0 20px 60px rgba(0,0,0,.5); color: #f0f4f8; font-family: 'Inter', sans-serif; }
+  .auth-logo { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 18px; }
+  .auth-logo img { width: 72px; height: 72px; border-radius: 16px; }
+  .auth-logo h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; margin: 0; }
+  .auth-tabs { display: flex; background: #0b0f14; border-radius: 10px; padding: 4px; margin-bottom: 16px; }
+  .auth-tabs button { flex: 1; padding: 9px; border: 0; border-radius: 8px; background: transparent; color: #94a3b8; font-weight: 600; cursor: pointer; font-family: inherit; font-size: 13px; }
+  .auth-tabs button.active { background: #1f2a36; color: #4ade80; }
+  .auth-card label { display: block; font-size: 12px; color: #94a3b8; margin: 10px 0 4px; }
+  .auth-card input { width: 100%; box-sizing: border-box; padding: 11px 12px; border-radius: 10px; border: 1px solid #2d3748; background: #0b0f14; color: #f0f4f8; font-size: 15px; font-family: inherit; outline: none; }
+  .auth-card input:focus { border-color: #34d399; }
+  .auth-pass { position: relative; }
+  .auth-pass button { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: 0; color: #94a3b8; cursor: pointer; font-size: 15px; }
+  .auth-submit { width: 100%; margin-top: 18px; padding: 12px; border: 0; border-radius: 10px; background: linear-gradient(90deg,#10b981,#34d399); color: #04130c; font-weight: 700; font-size: 15px; cursor: pointer; font-family: inherit; }
+  .auth-submit:disabled { opacity: .6; cursor: wait; }
+  .auth-link { display: block; margin: 12px auto 0; background: none; border: 0; color: #60a5fa; font-size: 13px; cursor: pointer; font-family: inherit; }
+  .auth-msg { margin-top: 12px; font-size: 13px; line-height: 1.4; min-height: 18px; text-align: center; }
+  .auth-msg.err { color: #f87171; } .auth-msg.ok { color: #4ade80; }
+  .auth-loading { text-align: center; color: #94a3b8; font-size: 14px; }
+  .sync-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; white-space: nowrap; }
+  .sync-chip button { background: none; border: 0; color: var(--accent); cursor: pointer; font-size: 12px; padding: 0 0 0 6px; font-family: inherit; }
 </style>
 </head>
 <body>
+<!-- ── LOGIN ── -->
+<div id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-logo"><img src="icon-192.png?v=3" alt=""><h1>Trading Journal</h1></div>
+    <div id="authLoading" class="auth-loading">Cargando…</div>
+    <div id="authForm" style="display:none">
+      <div class="auth-tabs">
+        <button type="button" id="tabLogin" class="active" onclick="authMode('login')">Iniciar sesión</button>
+        <button type="button" id="tabSignup" onclick="authMode('signup')">Crear cuenta</button>
+      </div>
+      <form onsubmit="event.preventDefault(); authSubmit();">
+        <label for="authEmail">Correo</label>
+        <input id="authEmail" type="email" autocomplete="email" required placeholder="tu@correo.com">
+        <label for="authPass">Contraseña</label>
+        <div class="auth-pass"><input id="authPass" type="password" autocomplete="current-password" required minlength="6" placeholder="Mínimo 6 caracteres"><button type="button" onclick="authEye('authPass',this)">👁</button></div>
+        <div id="authConfirmWrap" style="display:none">
+          <label for="authPass2">Confirmar contraseña</label>
+          <div class="auth-pass"><input id="authPass2" type="password" autocomplete="new-password" placeholder="Repite la contraseña"><button type="button" onclick="authEye('authPass2',this)">👁</button></div>
+        </div>
+        <button class="auth-submit" id="authBtn" type="submit">Entrar</button>
+      </form>
+      <button type="button" class="auth-link" id="authForgot" onclick="authForgot()">¿Olvidaste tu contraseña?</button>
+      <div class="auth-msg" id="authMsg"></div>
+    </div>
+  </div>
+</div>
 <div class="app">
 
   <!-- HEADER -->
@@ -2737,6 +2786,222 @@ function updateConsSummaryLabel() {
   if (lbl) { lbl.textContent = fmtSigned(totalPnl); lbl.style.color = totalPnl>=0?'var(--green-light)':'var(--red)'; }
 }
 
+// ── LOGIN + SINCRONIZACIÓN EN LA NUBE (Firebase) ─────────────────────────────
+// La app sigue guardando todo en localStorage (funciona sin internet) y este
+// módulo replica los cambios a Firestore: users/{uid} (cuentas) y
+// users/{uid}/days/{cuenta}__{fecha} (un documento por día).
+const TJSync = (function () {
+  let cloud = null, uid = null, synced = {}, timer = null, pushing = null, again = false, started = false;
+  const fnv = s => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36) + '.' + s.length; };
+  const isDay = k => /^\d{4}-\d{2}-\d{2}$/.test(k);
+  const keyOf = accId => accId + '_' + BASE_STORE_KEY;
+  const readAcc = accId => {
+    if (accId === currentAccountId) return state;
+    try { return JSON.parse(localStorage.getItem(keyOf(accId))) || {}; } catch (e) { return {}; }
+  };
+  const writeAcc = (accId, st) => {
+    if (accId === currentAccountId) { state = st; }
+    try { localStorage.setItem(keyOf(accId), JSON.stringify(st)); } catch (e) { console.warn('localStorage lleno', e); }
+  };
+  const metaKey = () => 'tj_sync_' + uid;
+  const saveMeta = () => { try { localStorage.setItem(metaKey(), JSON.stringify(synced)); } catch (e) {} };
+  const accHash = () => fnv(JSON.stringify(accounts.map(a => ({ id: a.id, name: a.name, created: a.created || 0 }))));
+
+  function status(kind, text) {
+    const el = document.getElementById('syncStatus'); if (!el) return;
+    el.textContent = ({ ok: '☁️ ', busy: '⏳ ', err: '⚠️ ' }[kind] || '') + text;
+  }
+
+  // Comprime pantallazos para la nube (máx 1280px, JPEG) y respeta el límite de ~1 MB por documento
+  const imgCache = new Map();
+  function compress(dataUrl) {
+    if (!dataUrl || !dataUrl.startsWith('data:image')) return Promise.resolve(dataUrl);
+    const k = fnv(dataUrl);
+    if (imgCache.has(k)) return Promise.resolve(imgCache.get(k));
+    return new Promise(res => {
+      const img = new Image();
+      img.onload = () => {
+        const sc = Math.min(1, 1280 / Math.max(img.width, img.height));
+        const c = document.createElement('canvas'); c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        let out = c.toDataURL('image/jpeg', 0.75);
+        if (out.length > dataUrl.length) out = dataUrl;
+        imgCache.set(k, out); res(out);
+      };
+      img.onerror = () => res(dataUrl);
+      img.src = dataUrl;
+    });
+  }
+  async function cloudDay(day) {
+    const d = { ...day };
+    const imgs = [];
+    let size = JSON.stringify({ ...d, images: [] }).length;
+    for (const im of (day.images || [])) {
+      const url = await compress(im.dataUrl);
+      if (size + url.length > 950000) { d.imagesTrimmed = (d.imagesTrimmed || 0) + 1; continue; }
+      size += url.length; imgs.push({ ...im, dataUrl: url });
+    }
+    d.images = imgs;
+    return d;
+  }
+
+  function applyRemote(id, data, removed) {
+    const sep = id.lastIndexOf('__'); if (sep < 0) return false;
+    const accId = data ? data.acc : id.slice(0, sep), date = data ? data.date : id.slice(sep + 2);
+    const st = readAcc(accId);
+    if (removed) { if (!st[date]) { delete synced[id]; return false; } delete st[date]; delete synced[id]; }
+    else { st[date] = data.day; synced[id] = fnv(JSON.stringify(data.day)); }
+    writeAcc(accId, st);
+    return accId === currentAccountId;
+  }
+  function applyAccounts(list) {
+    if (!Array.isArray(list) || !list.length) return false;
+    const merged = list.map(a => ({ ...(accounts.find(x => x.id === a.id) || {}), ...a }));
+    if (JSON.stringify(merged) === JSON.stringify(accounts)) return false;
+    accounts = merged; synced.__accounts = accHash();
+    try { localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts)); } catch (e) {}
+    if (!accounts.find(a => a.id === currentAccountId)) { currentAccountId = accounts[0].id; state = readAcc(currentAccountId); }
+    return true;
+  }
+  function refreshUI() {
+    try { renderAccountSelector(); render(); } catch (e) { console.warn(e); }
+  }
+
+  async function doPush() {
+    const puts = [], dels = [], seen = new Set();
+    for (const acc of accounts) {
+      const st = readAcc(acc.id);
+      for (const k of Object.keys(st)) {
+        if (!isDay(k) || !st[k]) continue;
+        const id = acc.id + '__' + k; seen.add(id);
+        const h = fnv(JSON.stringify(st[k]));
+        if (synced[id] !== h) puts.push({ id, acc: acc.id, date: k, day: st[k], h });
+      }
+    }
+    for (const id of Object.keys(synced)) if (id !== '__accounts' && !seen.has(id)) dels.push(id);
+    const ah = accHash();
+    if (!puts.length && !dels.length && synced.__accounts === ah) { status('ok', 'Sincronizado'); return; }
+    status('busy', 'Sincronizando…');
+    if (synced.__accounts !== ah) {
+      await cloud.setUser({ accounts: accounts.map(a => ({ id: a.id, name: a.name, created: a.created || 0 })), updated: Date.now() });
+      synced.__accounts = ah;
+    }
+    const docs = [];
+    for (const p of puts) docs.push({ id: p.id, data: { acc: p.acc, date: p.date, day: await cloudDay(p.day), updated: Date.now() } });
+    await cloud.writeDays(docs, dels);
+    puts.forEach(p => synced[p.id] = p.h);
+    dels.forEach(id => delete synced[id]);
+    saveMeta();
+    status('ok', 'Sincronizado');
+  }
+  function push() {
+    if (!started) return Promise.resolve();
+    if (pushing) { again = true; return pushing; }
+    pushing = doPush().catch(e => { console.warn('sync', e); status('err', 'Sin conexión — se guardará al volver'); })
+      .finally(() => { pushing = null; if (again) { again = false; push(); } });
+    return pushing;
+  }
+  function schedule() { if (!started) return; clearTimeout(timer); timer = setTimeout(push, 1200); }
+
+  async function start(adapter, userId) {
+    cloud = adapter; uid = userId;
+    try { synced = JSON.parse(localStorage.getItem(metaKey())) || {}; } catch (e) { synced = {}; }
+    status('busy', 'Sincronizando…');
+    const [u, days] = await Promise.all([cloud.getUser(), cloud.listDays()]);
+    // Cuentas: une las de la nube con las locales (nada se pierde)
+    const cloudAccs = (u && u.accounts) || [];
+    const merged = cloudAccs.slice();
+    accounts.forEach(a => { if (!merged.find(c => c.id === a.id)) merged.push(a); });
+    applyAccounts(merged.length ? merged : accounts);
+    // Días: la nube manda; lo que solo existe en este equipo se sube después
+    days.forEach(d => applyRemote(d.id, d.data, false));
+    state = readAcc(currentAccountId);
+    refreshUI();
+    started = true;
+    await push();
+    cloud.onDays(changes => {
+      let cur = false;
+      changes.forEach(c => { if (applyRemote(c.id, c.data, c.type === 'removed')) cur = true; });
+      saveMeta();
+      if (cur) refreshUI();
+    });
+    cloud.onUser(u2 => { if (u2 && applyAccounts(u2.accounts)) refreshUI(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) push(); });
+  }
+
+  async function stop() {
+    clearTimeout(timer);
+    if (started) { try { await push(); } catch (e) {} }
+    started = false;
+  }
+  return { start, stop, schedule, push };
+})();
+
+// Cada guardado local se replica a la nube
+(function hookSaves() {
+  const _ss = saveState, _sa = saveAccounts;
+  saveState = function () { const r = _ss.apply(this, arguments); TJSync.schedule(); return r; };
+  saveAccounts = function () { const r = _sa.apply(this, arguments); TJSync.schedule(); return r; };
+})();
+
+// ── Pantalla de login ──
+let authCurrentMode = 'login';
+function authMode(m) {
+  authCurrentMode = m;
+  document.getElementById('tabLogin').classList.toggle('active', m === 'login');
+  document.getElementById('tabSignup').classList.toggle('active', m === 'signup');
+  document.getElementById('authConfirmWrap').style.display = m === 'signup' ? 'block' : 'none';
+  document.getElementById('authPass2').required = m === 'signup';
+  document.getElementById('authPass').autocomplete = m === 'signup' ? 'new-password' : 'current-password';
+  document.getElementById('authBtn').textContent = m === 'signup' ? 'Crear cuenta' : 'Entrar';
+  document.getElementById('authForgot').style.display = m === 'signup' ? 'none' : 'block';
+  authMsg('');
+}
+function authEye(id, btn) { const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; btn.textContent = i.type === 'password' ? '👁' : '🙈'; }
+function authMsg(t, ok) { const m = document.getElementById('authMsg'); m.textContent = t; m.className = 'auth-msg ' + (ok ? 'ok' : 'err'); }
+function authErr(e) {
+  const c = (e && e.code) || '';
+  return ({
+    'auth/invalid-email': 'El correo no es válido.',
+    'auth/invalid-credential': 'Correo o contraseña incorrectos.',
+    'auth/wrong-password': 'Correo o contraseña incorrectos.',
+    'auth/user-not-found': 'No existe una cuenta con ese correo.',
+    'auth/email-already-in-use': 'Ya existe una cuenta con ese correo. Inicia sesión.',
+    'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
+    'auth/too-many-requests': 'Demasiados intentos. Espera unos minutos.',
+    'auth/network-request-failed': 'Sin conexión a internet.',
+    'auth/missing-password': 'Escribe tu contraseña.'
+  })[c] || ('Error: ' + (e && e.message || c));
+}
+async function authSubmit() {
+  const email = document.getElementById('authEmail').value.trim();
+  const pass = document.getElementById('authPass').value;
+  const btn = document.getElementById('authBtn');
+  if (authCurrentMode === 'signup') {
+    if (pass.length < 6) return authMsg('La contraseña debe tener al menos 6 caracteres.');
+    if (pass !== document.getElementById('authPass2').value) return authMsg('Las contraseñas no coinciden.');
+  }
+  btn.disabled = true; authMsg('');
+  try {
+    if (authCurrentMode === 'signup') await window.TJAuth.signUp(email, pass);
+    else await window.TJAuth.signIn(email, pass);
+  } catch (e) { authMsg(authErr(e)); }
+  btn.disabled = false;
+}
+async function authForgot() {
+  const email = document.getElementById('authEmail').value.trim();
+  if (!email) return authMsg('Escribe tu correo arriba y vuelve a pulsar "¿Olvidaste tu contraseña?".');
+  try { await window.TJAuth.reset(email); authMsg('Te enviamos un correo para crear una nueva contraseña. Revisa también spam.', true); }
+  catch (e) { authMsg(authErr(e)); }
+}
+async function authLogout() {
+  if (!confirm('¿Cerrar sesión en este dispositivo? Tus datos quedan guardados en la nube.')) return;
+  await TJSync.stop();
+  Object.keys(localStorage).forEach(k => { if (k === ACCOUNTS_KEY || k.endsWith('_' + BASE_STORE_KEY) || k.startsWith('tj_sync_')) localStorage.removeItem(k); });
+  await window.TJAuth.signOut();
+  location.reload();
+}
+
 // ── LIMPIEZA ÚNICA: borra días con P&L imposible creados por el importador MT5 antiguo ──
 (function cleanBadImports() {
   let removed = 0;
@@ -2767,5 +3032,76 @@ function pwaDismiss(){var b=document.getElementById('installBanner');if(b)b.styl
 </script>
 
 <div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:#252d38;border-top:1px solid #3d4f66;padding:12px 16px;align-items:center;gap:10px;flex-wrap:wrap;"><span style="flex:1;font-weight:700;font-size:14px;color:#f0f4f8">Trading Journal</span><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:600;">Instalar</button><button onclick="pwaDismiss()" style="background:none;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;">×</button></div>
+<script type="module">
+// ⚠️ Configuración de Firebase (Consola Firebase → Configuración del proyecto → Tus apps → Web)
+const firebaseConfig = {
+  apiKey: "PEGAR_AQUI",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+if (!firebaseConfig.apiKey.includes('PEGAR')) {
+  const V = 'https://www.gstatic.com/firebasejs/10.12.2/';
+  const overlay = document.getElementById('authOverlay');
+  overlay.classList.add('show');
+  const [{ initializeApp }, A, F] = await Promise.all([
+    import(V + 'firebase-app.js'), import(V + 'firebase-auth.js'), import(V + 'firebase-firestore.js')
+  ]);
+  const app = initializeApp(firebaseConfig);
+  const auth = A.getAuth(app); auth.languageCode = 'es';
+  let db;
+  try { db = F.initializeFirestore(app, { localCache: F.persistentLocalCache({ tabManager: F.persistentMultipleTabManager() }) }); }
+  catch (e) { db = F.getFirestore(app); }
+
+  window.TJAuth = {
+    signIn: (e, p) => A.signInWithEmailAndPassword(auth, e, p),
+    signUp: (e, p) => A.createUserWithEmailAndPassword(auth, e, p),
+    reset: e => A.sendPasswordResetEmail(auth, e),
+    signOut: () => A.signOut(auth)
+  };
+  const adapter = uid => {
+    const userRef = F.doc(db, 'users', uid), daysRef = F.collection(db, 'users', uid, 'days');
+    return {
+      getUser: async () => { const s = await F.getDoc(userRef); return s.exists() ? s.data() : null; },
+      setUser: data => F.setDoc(userRef, data, { merge: true }),
+      listDays: async () => (await F.getDocs(daysRef)).docs.map(d => ({ id: d.id, data: d.data() })),
+      writeDays: async (puts, dels) => {
+        const ops = [...puts.map(p => b => b.set(F.doc(daysRef, p.id), p.data)), ...dels.map(id => b => b.delete(F.doc(daysRef, id)))];
+        for (let i = 0; i < ops.length; i += 20) {           // lotes pequeños: cada día puede pesar hasta ~1 MB
+          const b = F.writeBatch(db); ops.slice(i, i + 20).forEach(op => op(b)); await b.commit();
+        }
+      },
+      onDays: cb => F.onSnapshot(daysRef, snap => {
+        const ch = snap.docChanges().filter(c => !c.doc.metadata.hasPendingWrites)
+          .map(c => ({ type: c.type, id: c.doc.id, data: c.doc.data() }));
+        if (ch.length) cb(ch);
+      }),
+      onUser: cb => F.onSnapshot(userRef, s => { if (!s.metadata.hasPendingWrites && s.exists()) cb(s.data()); })
+    };
+  };
+
+  A.onAuthStateChanged(auth, async user => {
+    document.getElementById('authLoading').style.display = 'none';
+    if (!user) {
+      document.getElementById('authForm').style.display = 'block';
+      overlay.classList.add('show');
+      return;
+    }
+    overlay.classList.remove('show');
+    const bar = document.querySelector('.account-bar');
+    if (bar && !document.getElementById('syncChip')) {
+      const chip = document.createElement('span');
+      chip.className = 'sync-chip'; chip.id = 'syncChip';
+      chip.innerHTML = `<span id="syncStatus">⏳ Sincronizando…</span><span title="${user.email}">· ${user.email.split('@')[0]}</span><button onclick="authLogout()">Salir</button>`;
+      bar.appendChild(chip);
+    }
+    try { await TJSync.start(adapter(user.uid), user.uid); }
+    catch (e) { console.warn(e); const s = document.getElementById('syncStatus'); if (s) s.textContent = '⚠️ Error al sincronizar'; }
+  });
+}
+</script>
+
 </body>
 </html>

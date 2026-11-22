@@ -733,6 +733,10 @@
   .tj-guide .g-ok { background:rgba(46,229,157,.12); color:var(--neon); border:1px solid var(--neon-soft); font-weight:700; }
   .tj-guide .g-err { background:rgba(255,77,94,.12); color:var(--red); }
   .tj-guide .g-box ul { padding-left:18px; } .tj-guide .g-box li { margin-bottom:5px; } .tj-guide .g-box li b { color:var(--text); }
+  @media (min-width: 641px) {
+    .month-stats { grid-template-columns: 0.85fr 1.5fr 1fr 0.85fr !important; }
+    #statMonth { font-size: clamp(22px, 2.3vw, 30px) !important; white-space:nowrap; letter-spacing:-.5px; }
+  }
   .btn-icon svg { width:26px; height:26px; color: var(--neon); }
   .metric-ico svg { width:30px; height:30px; display:block; }
   .metric-ico.up, .metric-ico.trophy { color: var(--neon); }

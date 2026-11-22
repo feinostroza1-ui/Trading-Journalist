@@ -555,6 +555,199 @@
     .trade-thumb { width: 52px; min-width: 52px; height: 44px; font-size: 16px; }
     .modal { padding: 18px; }
   }
+  /* ══════════════ TEMA NEÓN v9 (solo apariencia) ══════════════ */
+  :root {
+    --bg: #05090b; --bg2: #0b1215; --bg3: #101a1e; --bg4: #16252a;
+    --green: #22c55e; --green-light: #2ee59d; --green-bg: #0a2a1d;
+    --red: #ff4d5e; --red-bg: #2a0c12;
+    --text: #f2f7f5; --muted: #8aa39b; --border: #1c3a30; --accent: #2ee59d;
+    --neon: #2ee59d; --neon-soft: rgba(46,229,157,.35); --neon-glow: 0 0 0 1px rgba(46,229,157,.18), 0 0 22px rgba(46,229,157,.10);
+  }
+  body:not(.light) { background:
+      radial-gradient(900px 500px at 85% -5%, rgba(46,229,157,.10), transparent 60%),
+      radial-gradient(700px 400px at -10% 10%, rgba(46,229,157,.06), transparent 60%), var(--bg);
+    background-attachment: fixed; }
+  body:not(.light)::before { content:""; position:fixed; top:-40px; left:-60px; width:420px; height:3px; transform:rotate(-38deg); transform-origin:left;
+    background: linear-gradient(90deg, transparent, rgba(46,229,157,.7), transparent); filter: blur(1px); pointer-events:none; z-index:0; }
+  .app { position: relative; z-index: 1; padding-bottom: 110px !important; }
+
+  /* Encabezado */
+  .header { align-items: center; }
+  .tj-top { display:flex; align-items:center; justify-content:space-between; width:100%; gap:12px; }
+  .tj-icon-btn { width:48px; height:48px; border-radius:14px; border:1px solid var(--border); background: var(--bg2); color: var(--text);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+  .tj-icon-btn svg { width:24px; height:24px; }
+  .tj-icon-btn.plain { border-color: transparent; background: transparent; }
+  .tj-brand { display:flex; align-items:center; gap:14px; }
+  .tj-brand img { width:58px; height:58px; border-radius:14px; filter: drop-shadow(0 0 10px rgba(46,229,157,.35)); }
+  .tj-brand .sep { width:1px; height:46px; background: linear-gradient(transparent, var(--muted), transparent); }
+  .tj-brand .name { font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:26px; line-height:1.02; letter-spacing:-.3px; }
+  .tj-brand .name span { display:block; color: var(--neon); }
+  .header-left { display:none; }
+  .header > div:last-child { width:100%; align-items:stretch !important; }
+
+  /* Interruptor modo noche */
+  .theme-btn { align-self:flex-start; display:inline-flex; align-items:center; gap:10px; border-radius:999px !important; padding:7px 8px 7px 14px !important;
+    background: var(--bg2) !important; border:1px solid var(--border) !important; color: var(--text); font-weight:600; }
+  .theme-btn .theme-icon { transform:none !important; }
+  .tj-switch { width:46px; height:26px; border-radius:999px; background:#33413c; position:relative; transition:background .2s; }
+  .tj-switch::after { content:""; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .2s; }
+  body:not(.light) .tj-switch { background: var(--neon); box-shadow: 0 0 12px rgba(46,229,157,.5); }
+  body:not(.light) .tj-switch::after { left:23px; }
+
+  /* Tarjetas de estadísticas */
+  .month-stats { display:grid !important; grid-template-columns: repeat(4, 1fr); gap:12px; width:100%; }
+  .stat-card { position:relative; text-align:left !important; border-radius:18px !important; padding:16px 16px 14px 62px !important; min-width:0 !important;
+    background: linear-gradient(160deg, var(--bg3), var(--bg2)) !important; border:1px solid var(--border) !important; }
+  .stat-card .stat-ico { position:absolute; left:16px; top:16px; width:32px; height:32px; color: var(--neon); }
+  .stat-label { font-size:12px !important; letter-spacing:1.4px !important; }
+  .stat-value { font-size:30px !important; font-family:'Plus Jakarta Sans',sans-serif; margin-top:6px !important; }
+  .stat-value.neutral { color: var(--text) !important; }
+  .stat-card:nth-child(2) { border-color: var(--neon-soft) !important; }
+
+  /* Panel de cuenta */
+  .account-bar { border-radius:22px !important; padding:16px !important; gap:12px !important;
+    border:1px solid var(--neon-soft) !important; box-shadow: var(--neon-glow); background: linear-gradient(160deg, var(--bg3), var(--bg2)) !important; }
+  .account-bar label { display:flex; align-items:center; gap:8px; font-size:13px !important; font-weight:600; letter-spacing:1.5px !important; }
+  .account-bar label::before { content:""; width:22px; height:22px; background: var(--neon);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 8l10 5 10-5-10-5z'/%3E%3Cpath d='m2 13 10 5 10-5'/%3E%3Cpath d='m2 17.5 10 5 10-5' opacity='.6'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 8l10 5 10-5-10-5z'/%3E%3Cpath d='m2 13 10 5 10-5'/%3E%3Cpath d='m2 17.5 10 5 10-5' opacity='.6'/%3E%3C/svg%3E") center/contain no-repeat; }
+  .account-select { border-radius:999px !important; padding:10px 16px !important; font-size:15px !important; background: var(--bg) !important; max-width:none !important; }
+  .btn-add-account { border-radius:14px !important; padding:12px 16px !important; font-size:15px !important; font-weight:700 !important;
+    background: var(--bg) !important; border:1px solid var(--border) !important; color: var(--text) !important; display:inline-flex; align-items:center; justify-content:center; gap:10px; }
+  .btn-add-account:hover { border-color: var(--neon) !important; }
+  .btn-add-account.tj-new { border-radius:999px !important; border:1.5px solid var(--neon) !important; color: var(--neon) !important; }
+  .btn-add-account.tj-wide { flex:1 1 40%; margin-left:0 !important; }
+  .btn-add-account svg { width:22px; height:22px; color: var(--neon); }
+  .btn-del-account { border-radius:12px !important; padding:10px 12px !important; }
+  .tj-break { flex-basis:100%; height:0; }
+  .sync-chip { flex-basis:100%; justify-content:flex-start; border-radius:14px !important; padding:12px 16px !important; font-size:14px !important; background: var(--bg); border-color: var(--border) !important; }
+  .sync-chip button { margin-left:auto; color: var(--neon) !important; font-weight:700; font-size:14px !important; }
+
+  /* Navegación de mes */
+  .nav { border-radius:22px !important; padding:12px !important; border:1px solid var(--neon-soft) !important; box-shadow: var(--neon-glow);
+    background: linear-gradient(160deg, var(--bg3), var(--bg2)) !important; }
+  .nav-btn { border-radius:14px !important; padding:10px 20px !important; font-size:15px !important; font-weight:600; background: var(--bg) !important; }
+  .nav-month { font-size:26px !important; }
+
+  /* Calendario */
+  .weekday { font-size:13px !important; font-weight:600; letter-spacing:1.2px !important; }
+  .weekday:last-child { color: var(--neon) !important; font-size:13px !important; }
+  .days-grid, .weekdays { gap:8px !important; }
+  .day-cell { border-radius:16px !important; background: var(--bg2) !important; border:1px solid #15241f !important; min-height:118px; }
+  .day-cell:hover { border-color: var(--neon) !important; }
+  .day-cell.has-profit { background: linear-gradient(160deg, rgba(46,229,157,.16), rgba(46,229,157,.04)) , var(--bg2) !important; border-color: rgba(46,229,157,.45) !important; }
+  .day-cell.has-loss   { background: linear-gradient(160deg, rgba(255,77,94,.18), rgba(255,77,94,.04)) , var(--bg2) !important; border-color: rgba(255,77,94,.45) !important; }
+  .day-cell.has-be     { background: linear-gradient(160deg, rgba(251,191,36,.16), rgba(251,191,36,.04)) , var(--bg2) !important; border-color: rgba(251,191,36,.5) !important; }
+  .day-num { font-size:18px !important; color: var(--text) !important; font-family:'Plus Jakarta Sans',sans-serif; }
+  .day-cell.has-profit .day-num { color: var(--neon) !important; }
+  .day-cell.has-loss .day-num { color: var(--red) !important; }
+  .day-cell.has-be .day-num { color: #fbbf24 !important; }
+  .day-pnl { font-size:16px !important; font-weight:800 !important; flex:none !important; }
+  .day-pnl.pos { color: var(--neon) !important; }
+  .day-cell.has-be .day-pnl { color: var(--text) !important; }
+  .day-trades { font-size:12px !important; }
+  .day-trades svg { width:13px !important; height:13px !important; }
+  .day-side { font-size:12px !important; padding:4px 9px !important; border-radius:8px !important; margin-top:4px !important; display:block !important; }
+  .day-side.buy  { background: rgba(46,229,157,.18) !important; color: var(--neon) !important; border:1px solid rgba(46,229,157,.25) !important; }
+  .day-side.sell { background: rgba(255,77,94,.22) !important; color: #ff6b78 !important; border:1px solid rgba(255,77,94,.3) !important; }
+  .day-tag { font-size:11px !important; padding:2px 7px !important; border-radius:6px !important; }
+  .week-total-cell { border-radius:16px !important; background: var(--bg2) !important; border:1px solid #15241f !important; }
+  .week-total-cell.profit-week { background: linear-gradient(160deg, rgba(46,229,157,.14), rgba(46,229,157,.03)), var(--bg2) !important; border-color: var(--neon-soft) !important; box-shadow: var(--neon-glow); }
+  .week-total-cell.loss-week { background: linear-gradient(160deg, rgba(255,77,94,.14), rgba(255,77,94,.03)), var(--bg2) !important; border-color: rgba(255,77,94,.4) !important; }
+  .week-total-cell .wt-label { font-size:11px !important; }
+  .week-total-cell .wt-value { font-size:17px !important; }
+  .week-total-cell .wt-value.pos { color: var(--neon) !important; }
+  .weekdays, .days-grid { grid-template-columns: repeat(5, 1fr) 88px !important; }
+
+  /* Secciones (curva, análisis, consolidado, IA, operaciones) */
+  .chart-toggle-btn, .analytics-toggle-btn, .consolidated-toggle-btn { border-radius:22px !important; padding:18px 20px !important;
+    border:1px solid var(--neon-soft) !important; box-shadow: var(--neon-glow); background: linear-gradient(160deg, var(--bg3), var(--bg2)) !important; }
+  .chart-toggle-btn.open, .analytics-toggle-btn.open, .consolidated-toggle-btn.open { border-radius:22px 22px 0 0 !important; }
+  .btn-icon { background: transparent !important; border:none !important; font-size:20px !important; }
+  .btn-label { font-size:16px !important; letter-spacing:.6px !important; }
+  #chartSummaryLabel { padding:5px 12px; border-radius:999px; border:1px solid currentColor; font-weight:700; font-size:14px !important; }
+  .chart-panel, .analytics-panel, .consolidated-panel { border:1px solid var(--neon-soft) !important; border-top:none !important; border-radius:0 0 22px 22px !important;
+    background: var(--bg2) !important; }
+  .chart-panel.open { max-height: 520px !important; }
+  .chart-tabs { display:grid !important; grid-template-columns: repeat(4,1fr); gap:10px !important; }
+  .chart-tab { border-radius:14px !important; padding:12px 6px !important; font-size:12px !important; font-weight:600; color: var(--text) !important;
+    background: var(--bg) !important; display:flex; flex-direction:column; align-items:center; gap:6px; line-height:1.25; }
+  .chart-tab svg { width:22px; height:22px; color: var(--neon); }
+  .chart-tab.active { background: linear-gradient(160deg, rgba(46,229,157,.20), rgba(46,229,157,.05)) !important; border-color: var(--neon) !important; box-shadow: 0 0 14px rgba(46,229,157,.25); }
+  .chart-wrap { height: 300px !important; }
+  .an-title { font-size:13px !important; letter-spacing:1.2px !important; }
+  .metric-grid { grid-template-columns: repeat(2, 1fr) !important; gap:12px !important; }
+  .metric-card { position:relative; border-radius:16px !important; padding:14px 16px !important; background: var(--bg) !important; }
+  .metric-label { font-size:13px !important; letter-spacing:.8px !important; }
+  .metric-value { font-size:26px !important; font-family:'Plus Jakarta Sans',sans-serif; }
+  .metric-value.pos { color: var(--neon) !important; }
+  .metric-ico { position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:26px; opacity:.9; }
+  .ai-panel, .week-panel, .trade-row { border-radius:18px !important; border-color: var(--border) !important; }
+  .ai-panel { border:1px solid var(--neon-soft) !important; box-shadow: var(--neon-glow); }
+
+  /* Barra inferior */
+  .tj-bottom { position:fixed; left:0; right:0; bottom:0; z-index:90; display:flex; justify-content:center;
+    background: rgba(5,9,11,.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-top:1px solid var(--border); border-radius:22px 22px 0 0; padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); }
+  body.light .tj-bottom { background: rgba(255,255,255,.95); }
+  .tj-bottom-in { display:grid; grid-template-columns: repeat(4,1fr); width:100%; max-width:920px; }
+  .tj-tab { background:none; border:0; color: var(--muted); display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 0 10px;
+    font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; position:relative; }
+  .tj-tab svg { width:26px; height:26px; }
+  .tj-tab.active { color: var(--neon); }
+  .tj-tab.active::after { content:""; position:absolute; bottom:0; left:22%; right:22%; height:3px; border-radius:3px; background: var(--neon); box-shadow: 0 0 10px var(--neon); }
+  .tj-tab.active::before { content:""; position:absolute; top:-9px; left:22%; right:22%; height:2px; background: var(--neon); box-shadow: 0 0 8px var(--neon); }
+
+  /* Menú (hamburguesa / ajustes) */
+  .tj-menu { position:fixed; inset:0; z-index:150; display:none; background: rgba(0,0,0,.6); }
+  .tj-menu.open { display:block; }
+  .tj-menu-card { position:absolute; left:12px; right:12px; bottom:96px; max-width:460px; margin:0 auto; background: var(--bg2); border:1px solid var(--neon-soft);
+    border-radius:22px; padding:10px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+  .tj-menu-card button { width:100%; display:flex; align-items:center; gap:14px; padding:14px 14px; border:0; border-radius:14px; background:none; color: var(--text);
+    font-family:inherit; font-size:15px; font-weight:600; cursor:pointer; text-align:left; }
+  .tj-menu-card button:hover { background: var(--bg3); }
+  .tj-menu-card .ver { text-align:center; color: var(--muted); font-size:11px; padding:6px 0 2px; }
+
+  .btn-icon svg { width:26px; height:26px; color: var(--neon); }
+  .metric-ico svg { width:30px; height:30px; display:block; }
+  .metric-ico.up, .metric-ico.trophy { color: var(--neon); }
+  .metric-ico.down, .metric-ico.warn { color: var(--red); }
+  .metric-ico.scale { color: var(--muted); }
+  .metric-card .metric-value, .metric-card .metric-label, .metric-card .metric-sub { padding-right:38px; }
+  @media (max-width: 640px) {
+    .app { padding: 14px 12px 110px !important; }
+    .month-stats { grid-template-columns: 0.9fr 1.4fr 1.15fr !important; }
+    .stat-label { white-space:nowrap; letter-spacing:.6px !important; }
+    #statMonth { font-size:21px !important; letter-spacing:-.4px; }
+    .account-bar { gap:10px !important; }
+    .account-bar label { font-size:11px !important; letter-spacing:1px !important; gap:6px; }
+    .account-select { flex:1 1 0 !important; min-width:0 !important; font-size:14px !important; padding:9px 12px !important; }
+    .btn-add-account.tj-new { padding:9px 12px !important; font-size:13px !important; }
+    .btn-del-account { display:none; }
+    .btn-add-account.tj-wide { padding:12px 10px !important; }
+    .day-pnl { font-size:12px !important; letter-spacing:-.4px; white-space:nowrap; overflow:hidden; text-overflow:clip; }
+    .tj-brand img { width:50px; height:50px; }
+    .tj-brand .name { font-size:24px; }
+    .month-stats { grid-template-columns: repeat(3, 1fr); gap:10px; }
+    .stat-card { padding:12px 10px 12px 12px !important; }
+    .stat-card .stat-ico { position:static; width:26px; height:26px; float:left; margin:0 8px 4px 0; }
+    .stat-label { font-size:11px !important; letter-spacing:1px !important; line-height:26px; }
+    .stat-value { font-size:24px !important; clear:both; }
+    .day-cell { min-height:104px; }
+    .cell-body { padding:7px 6px !important; }
+    .day-num { font-size:15px !important; }
+    .day-pnl { font-size:13px !important; }
+    .day-side { font-size:10px !important; padding:3px 5px !important; }
+    .day-tag { font-size:9px !important; padding:1px 5px !important; }
+    .weekdays, .days-grid { grid-template-columns: repeat(5, 1fr) 64px !important; gap:5px !important; }
+    .week-total-cell .wt-value { font-size:13px !important; }
+    .nav-month { font-size:21px !important; }
+    .nav-btn { padding:9px 14px !important; }
+    .btn-label { font-size:14px !important; }
+    .chart-tab { font-size:10px !important; }
+    .metric-value { font-size:21px !important; }
+  }
   /* ── LOGIN / SYNC ── */
   #authOverlay { position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at 70% 20%, #0f2a20 0%, #0b0f14 55%); display: none; align-items: center; justify-content: center; padding: 20px; }
   #authOverlay.show { display: flex; }
@@ -611,30 +804,36 @@
 
   <!-- HEADER -->
   <div class="header">
+    <div class="tj-top">
+      <button class="tj-icon-btn plain" onclick="tjMenu(true)" aria-label="Menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="tj-brand"><img src="icon-192.png?v=7" alt=""><div class="sep"></div><div class="name">Trading<span>Journal</span></div></div>
+      <button class="tj-icon-btn" onclick="tjGo('stats')" aria-label="Estadísticas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V12M12 20V5M18 20v-6"/></svg></button>
+    </div>
     <div class="header-left">
       <h1>Trading Journal</h1>
-      <div class="subtitle">Registro visual de operaciones · doble clic en día = semana · v8.1</div>
+      <div class="subtitle">Registro visual de operaciones · doble clic en día = semana · v9</div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
       <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">
         <span class="theme-icon">🌙</span>
-        <span id="themeLabel">Modo día</span>
+        <span id="themeLabel">Modo noche</span>
+        <span class="tj-switch"></span>
       </button>
       <div class="month-stats">
       <div class="stat-card">
-        <div class="stat-label">Días</div>
+        <span class="stat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4M7.5 13h.01M12 13h.01M16.5 13h.01M7.5 17h.01M12 17h.01"/></svg></span><div class="stat-label">Días</div>
         <div class="stat-value neutral" id="statDays">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">P&amp;L Mes</div>
+        <span class="stat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><div class="stat-label">P&amp;L Mes</div>
         <div class="stat-value" id="statMonth">$0.00</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Win Rate</div>
+        <span class="stat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></span><div class="stat-label">Win Rate</div>
         <div class="stat-value neutral" id="statWin">0%</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Ops</div>
+        <span class="stat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></span><div class="stat-label">Ops</div>
         <div class="stat-value neutral" id="statOps">0</div>
       </div>
       </div><!-- month-stats -->
@@ -645,10 +844,11 @@
   <div class="account-bar">
     <label>Cuenta</label>
     <select class="account-select" id="accountSelect" onchange="switchAccount(this.value)"></select>
-    <button class="btn-add-account" onclick="addAccount()">+ Nueva cuenta</button>
+    <button class="btn-add-account tj-new" onclick="addAccount()">+ Nueva cuenta</button>
     <button class="btn-del-account" onclick="deleteAccount()" title="Eliminar cuenta">🗑</button>
-    <button class="btn-add-account" onclick="openImportModal()" style="margin-left:auto">📥 Importar MT5</button>
-    <button class="btn-add-account" onclick="openShareModal()">📤 Compartir</button>
+    <span class="tj-break"></span>
+    <button class="btn-add-account tj-wide" onclick="openImportModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg> Importar MT5</button>
+    <button class="btn-add-account tj-wide" onclick="openShareModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l7 7-7 7"/><path d="M21 12H10a7 7 0 0 0-7 7"/></svg> Compartir</button>
   </div>
 
   <!-- NAV -->
@@ -691,17 +891,17 @@
   <!-- CHART SECTION -->
   <div class="chart-section">
     <button class="chart-toggle-btn" id="chartToggleBtn" onclick="toggleChart()">
-      <div class="btn-icon">📈</div>
+      <div class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="m4 16 5-5 4 4 7-8"/><path d="M15 7h5v5"/></svg></div>
       <span class="btn-label">Curva de rendimiento</span>
       <span style="font-size:11px;color:var(--muted);margin-right:8px" id="chartSummaryLabel"></span>
       <span class="btn-chevron">▼</span>
     </button>
     <div class="chart-panel" id="chartPanel">
       <div class="chart-tabs">
-        <button class="chart-tab active" id="tabEquity" onclick="setChartMode('equity')">Equity acumulado</button>
-        <button class="chart-tab"        id="tabDaily"  onclick="setChartMode('daily')">P&amp;L por día</button>
-        <button class="chart-tab"        id="tabBar"    onclick="setChartMode('bar')">Barras</button>
-        <button class="chart-tab"        id="tabYear"   onclick="setChartMode('year')">Año completo</button>
+        <button class="chart-tab active" id="tabEquity" onclick="setChartMode('equity')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Equity acumulado</button>
+        <button class="chart-tab"        id="tabDaily"  onclick="setChartMode('daily')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>P&amp;L por día</button>
+        <button class="chart-tab"        id="tabBar"    onclick="setChartMode('bar')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V12M12 20V5M18 20v-6"/></svg>Barras</button>
+        <button class="chart-tab"        id="tabYear"   onclick="setChartMode('year')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></svg>Año completo</button>
       </div>
       <div class="chart-wrap" id="chartWrap">
         <canvas id="equityChart"></canvas>
@@ -712,7 +912,7 @@
   <!-- ANALYTICS SECTION -->
   <div class="analytics-section">
     <button class="analytics-toggle-btn" id="analyticsToggleBtn" onclick="toggleAnalytics()">
-      <div class="btn-icon">📊</div>
+      <div class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V12M12 20V5M18 20v-6"/></svg></div>
       <span class="btn-label">Análisis &amp; Estadísticas</span>
       <span class="btn-chevron">▼</span>
     </button>
@@ -772,7 +972,7 @@
   <!-- CONSOLIDATED DASHBOARD -->
   <div class="consolidated-section">
     <button class="consolidated-toggle-btn" id="consToggleBtn" onclick="toggleConsolidated()">
-      <div class="btn-icon">🏦</div>
+      <div class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/></svg></div>
       <span class="btn-label">Consolidado — Todas las cuentas</span>
       <span id="consSummaryLabel" style="font-size:12px;color:var(--muted);margin-right:8px"></span>
       <span class="btn-chevron">▼</span>
@@ -1165,7 +1365,7 @@ function buildCell(d, key, other) {
     const absVal = Math.abs(pnl);
     pnlEl.textContent = (pnl >= 0 ? '$' : '-$') + (absVal >= 1000
       ? (absVal/1000).toFixed(1)+'k'
-      : absVal.toFixed(absVal % 1 < 0.01 ? 0 : 1));
+      : absVal.toFixed((absVal % 1 < 0.01 || window.innerWidth < 640) ? 0 : 1));
     body.appendChild(pnlEl);
     if (data.trades) {
       const tEl = document.createElement('div');
@@ -1509,8 +1709,8 @@ function renderChart() {
   const finalVal = data.equity[data.equity.length - 1];
 
   // Color helpers
-  const GREEN  = '#3fb950';
-  const RED    = '#f85149';
+  const GREEN  = '#2ee59d';
+  const RED    = '#ff4d5e';
   const ACCENT = '#388bfd';
   const MUTED  = '#7d8590';
 
@@ -1815,18 +2015,25 @@ function renderMetrics() {
   }
 
   const metrics = [
-    { label:'P&L Total', value: fmtSigned(total), cls: total>=0?'pos':'neg' },
-    { label:'Win Rate',  value: wr+'%', cls: wr>=50?'pos':'neg' },
-    { label:'Ratio G/P', value: ratio+'x', cls: parseFloat(ratio)>=1?'pos':'neg' },
-    { label:'Avg Win',   value: '+$'+parseFloat(avgW).toLocaleString('en-US',{minimumFractionDigits:2}), cls:'pos', sub: `${wins} días` },
-    { label:'Avg Loss',  value: '-$'+parseFloat(avgL).toLocaleString('en-US',{minimumFractionDigits:2}), cls:'neg', sub: `${losses} días` },
-    { label:'Max DD',    value: '-$'+maxDD.toFixed(2), cls:'neg' },
+    { label:'P&L Total', value: fmtSigned(total), cls: total>=0?'pos':'neg', ico: total>=0?'up':'down' },
+    { label:'Win Rate',  value: wr+'%', cls: wr>=50?'pos':'neg', ico:'trophy' },
+    { label:'Ratio G/P', value: ratio+'x', cls: parseFloat(ratio)>=1?'pos':'neg', ico:'scale' },
+    { label:'Avg Win',   value: '+$'+parseFloat(avgW).toLocaleString('en-US',{minimumFractionDigits:2}), cls:'pos', sub: `${wins} días`, ico:'up' },
+    { label:'Avg Loss',  value: '-$'+parseFloat(avgL).toLocaleString('en-US',{minimumFractionDigits:2}), cls:'neg', sub: `${losses} días`, ico:'down' },
+    { label:'Max DD',    value: '-$'+maxDD.toFixed(2), cls:'neg', ico:'warn' },
     { label:'Racha act', value: streak+(streakType==='W'?' 🟢':' 🔴'), cls: streakType==='W'?'pos':'neg', sub: streakType==='W'?'Ganando':'Perdiendo' },
   ];
 
+  const TJ_ICO = {
+    up:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',
+    down:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 7 6 6 4-4 8 8"/><path d="M15 17h6v-6"/></svg>',
+    trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>',
+    scale:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/></svg>',
+    warn:   '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2zm-1 7h2v6h-2zm0 8h2v2h-2z"/></svg>'
+  };
   document.getElementById('metricGrid').innerHTML = metrics.map(m => `
     <div class="metric-card">
-      <div class="metric-label">${m.label}</div>
+      ${m.ico ? `<span class="metric-ico ${m.ico}">${TJ_ICO[m.ico]}</span>` : ''}<div class="metric-label">${m.label}</div>
       <div class="metric-value ${m.cls||''}">${m.value}</div>
       ${m.sub ? `<div class="metric-sub">${m.sub}</div>` : ''}
     </div>`).join('');
@@ -1984,8 +2191,6 @@ function renderHistogram() {
 // ── THEME ─────────────────────────────────────────────────────────────────
 function toggleTheme() {
   const isLight = document.body.classList.toggle('light');
-  document.getElementById('themeLabel').textContent = isLight ? 'Modo noche' : 'Modo día';
-  document.querySelector('.theme-icon').textContent  = isLight ? '☀️' : '🌙';
   try { localStorage.setItem('tj_theme', isLight ? 'light' : 'dark'); } catch(e) {}
   // Redraw chart with new colors
   if (chartOpen) renderChart();
@@ -1997,8 +2202,6 @@ function toggleTheme() {
     const saved = localStorage.getItem('tj_theme');
     if (saved === 'light') {
       document.body.classList.add('light');
-      document.getElementById('themeLabel').textContent = 'Modo noche';
-      document.querySelector('.theme-icon').textContent  = '☀️';
     }
   } catch(e) {}
 })();
@@ -3032,6 +3235,48 @@ function pwaDismiss(){var b=document.getElementById('installBanner');if(b)b.styl
 </script>
 
 <div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:#252d38;border-top:1px solid #3d4f66;padding:12px 16px;align-items:center;gap:10px;flex-wrap:wrap;"><span style="flex:1;font-weight:700;font-size:14px;color:#f0f4f8">Trading Journal</span><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:600;">Instalar</button><button onclick="pwaDismiss()" style="background:none;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;">×</button></div>
+<!-- ── BARRA INFERIOR + MENÚ ── -->
+<nav class="tj-bottom"><div class="tj-bottom-in">
+  <button class="tj-tab active" data-tab="home" onclick="tjGo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>Inicio</button>
+  <button class="tj-tab" data-tab="stats" onclick="tjGo('stats')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20V12M12 20V5M18 20v-6"/></svg>Estadísticas</button>
+  <button class="tj-tab" data-tab="ops" onclick="tjGo('ops')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Operaciones</button>
+  <button class="tj-tab" data-tab="menu" onclick="tjMenu(true)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
+</div></nav>
+<div class="tj-menu" id="tjMenu" onclick="if(event.target===this)tjMenu(false)"><div class="tj-menu-card">
+  <button onclick="tjMenu(false);toggleTheme()">🌗 Cambiar modo noche / día</button>
+  <button onclick="tjMenu(false);addAccount()">➕ Nueva cuenta</button>
+  <button onclick="tjMenu(false);deleteAccount();render()">🗑️ Eliminar cuenta actual</button>
+  <button onclick="tjMenu(false);openImportModal()">📥 Importar reporte MT5</button>
+  <button onclick="tjMenu(false);openShareModal()">📤 Compartir</button>
+  <button onclick="tjMenu(false);tjGo('cons')">🏦 Consolidado de cuentas</button>
+  <button onclick="tjMenu(false);tjGo('ai')">✦ Análisis IA</button>
+  <button id="tjLogoutBtn" onclick="tjMenu(false);authLogout()">🚪 Cerrar sesión</button>
+  <div class="ver">Trading Journal · v9</div>
+</div></div>
+<script>
+function tjMenu(open) {
+  document.getElementById('tjMenu').classList.toggle('open', open);
+  const lo = document.getElementById('tjLogoutBtn'); if (lo) lo.style.display = window.TJAuth ? '' : 'none';
+}
+function tjSetTab(t) { document.querySelectorAll('.tj-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === t)); }
+function tjScroll(el) { if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth' }); }
+function tjGo(where) {
+  if (where === 'home') { window.scrollTo({ top: 0, behavior: 'smooth' }); tjSetTab('home'); return; }
+  if (where === 'stats') {
+    if (!document.getElementById('chartPanel').classList.contains('open')) toggleChart();
+    if (!document.getElementById('analyticsPanel').classList.contains('open')) toggleAnalytics();
+    tjScroll(document.querySelector('.chart-section')); tjSetTab('stats'); return;
+  }
+  if (where === 'ops') { tjScroll(document.querySelector('.trades-section')); tjSetTab('ops'); return; }
+  if (where === 'cons') { if (!document.getElementById('consolidatedPanel').classList.contains('open')) toggleConsolidated(); tjScroll(document.querySelector('.consolidated-section')); return; }
+  if (where === 'ai') { tjScroll(document.getElementById('aiPanel')); return; }
+}
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + window.innerHeight * 0.35;
+  const top = el => { const e = document.querySelector(el); return e ? e.getBoundingClientRect().top + window.scrollY : 1e9; };
+  tjSetTab(y >= top('.trades-section') ? 'ops' : y >= top('.chart-section') ? 'stats' : 'home');
+}, { passive: true });
+</script>
 <script type="module">
 // ⚠️ Configuración de Firebase (Consola Firebase → Configuración del proyecto → Tus apps → Web)
 const firebaseConfig = {

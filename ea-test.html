@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8"><title>EA test</title><pre id="o">probando…</pre>
+<script>
+const base="https://firestore.googleapis.com/v1/projects/trading-journal-15208/databases/(default)/documents/users/UIDPRUEBA";
+const day='{"fields":{"acc":{"stringValue":"default"},"date":{"stringValue":"2026-11-19"},"updated":{"integerValue":"1795000000000"},"day":{"mapValue":{"fields":{"pnl":{"doubleValue":164.16},"trades":{"integerValue":"2"},"side":{"stringValue":"sell"},"tags":{"arrayValue":{"values":[{"stringValue":"tp"}]}},"src":{"stringValue":"mt5"}}}}}}';
+const day0=day.replace('{"values":[{"stringValue":"tp"}]}','{}');
+const mask="?updateMask.fieldPaths=acc&updateMask.fieldPaths=date&updateMask.fieldPaths=updated&updateMask.fieldPaths=day.pnl&updateMask.fieldPaths=day.trades&updateMask.fieldPaths=day.side&updateMask.fieldPaths=day.tags&updateMask.fieldPaths=day.src";
+const acc='{"fields":{"accounts":{"arrayValue":{"values":[{"mapValue":{"fields":{"id":{"stringValue":"default"},"name":{"stringValue":"Cuenta Principal"},"created":{"integerValue":"0"}}}},{"mapValue":{"fields":{"id":{"stringValue":"mt5_510224307"},"name":{"stringValue":"FTMO 100k"},"created":{"integerValue":"1795000000000"}}}}]}},"updated":{"integerValue":"1795000000000"}}}';
+const bad='{"fields":{"day":{"mapValue":{"fields":{"pnl":{"doubleValue":"x"}}}}}}';
+const tests=[["dia_con_tags",base+"/days/default__2026-11-19"+mask,day],["dia_sin_tags",base+"/days/default__2026-11-19"+mask,day0],["cuentas",base+"?updateMask.fieldPaths=accounts&updateMask.fieldPaths=updated",acc],["control_malo",base+"/days/x"+mask,bad]];
+(async()=>{let out=[];for(const [n,u,b] of tests){try{const r=await fetch(u,{method:"POST",headers:{"Content-Type":"application/json","X-HTTP-Method-Override":"PATCH"},body:b});const j=await r.json().catch(()=>({}));out.push(n+" => "+r.status+" "+(j.error?j.error.status+" "+(j.error.message||"").slice(0,80):""));}catch(e){out.push(n+" => ERR "+e.message)}}
+ try{const r=await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBvMv1TXHtabehe4ERSrec8bdy63y371wI",{method:"POST",headers:{"Content-Type":"application/json"},body:'{"email":"no-existe@example.com","password":"x","returnSecureToken":true}'});const j=await r.json();out.push("login_falso => "+r.status+" "+(j.error&&j.error.message));}catch(e){out.push("login ERR "+e.message)}
+ document.getElementById('o').textContent=out.join("\n");})();
+</script>

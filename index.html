@@ -725,6 +725,13 @@
   .tj-guide .g-url button { border:1px solid var(--neon); background:none; color:var(--neon); border-radius:8px; padding:5px 10px; font-weight:700; cursor:pointer; font-family:inherit; }
   .tj-guide .g-manual { margin-top:14px; border:1px solid var(--border); border-radius:16px; padding:12px 14px; }
   .tj-guide .g-manual summary { cursor:pointer; font-weight:700; color:var(--text); font-size:15px; margin-bottom:6px; }
+  .tj-guide .g-code { flex-direction:column; align-items:stretch; }
+  .tj-guide .g-code code { font-size:22px; font-weight:800; letter-spacing:2px; text-align:center; padding:12px 8px; color:var(--neon); }
+  .tj-guide .g-code button { padding:10px; font-size:15px; }
+  .tj-guide .g-wait, .tj-guide .g-ok, .tj-guide .g-err { margin-top:10px; padding:10px 12px; border-radius:12px; font-size:13.5px; }
+  .tj-guide .g-wait { background:var(--bg3); color:var(--muted); }
+  .tj-guide .g-ok { background:rgba(46,229,157,.12); color:var(--neon); border:1px solid var(--neon-soft); font-weight:700; }
+  .tj-guide .g-err { background:rgba(255,77,94,.12); color:var(--red); }
   .tj-guide .g-box ul { padding-left:18px; } .tj-guide .g-box li { margin-bottom:5px; } .tj-guide .g-box li b { color:var(--text); }
   .btn-icon svg { width:26px; height:26px; color: var(--neon); }
   .metric-ico svg { width:30px; height:30px; display:block; }
@@ -3253,6 +3260,69 @@ function pwaDismiss(){var b=document.getElementById('installBanner');if(b)b.styl
 </script>
 
 <div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:#252d38;border-top:1px solid #3d4f66;padding:12px 16px;align-items:center;gap:10px;flex-wrap:wrap;"><span style="flex:1;font-weight:700;font-size:14px;color:#f0f4f8">Trading Journal</span><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:600;">Instalar</button><button onclick="pwaDismiss()" style="background:none;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;">×</button></div>
+<!-- ── CONECTAR CUENTA MT5 ── -->
+<div class="modal-overlay" id="tjLink" onclick="if(event.target===this)tjLinkClose()">
+  <div class="modal tj-guide" style="max-width:520px">
+    <h2>🔗 Conectar cuenta MT5</h2>
+    <p class="g-intro">Tus operaciones cerradas en MT5 aparecerán solas en el journal, en el PC y en el celular. Solo se necesita MT5 abierto en tu PC.</p>
+    <div id="tjLinkNoAuth" class="g-box" style="display:none"><b>Inicia sesión primero</b>Para conectar MT5 necesitas haber entrado con tu correo en el journal.</div>
+    <div id="tjLinkBody">
+      <div class="g-step"><span>1</span><div><b>¿En qué cuenta del journal guardar?</b>
+        <select id="tjLinkAcc" class="account-select" style="width:100%;margin-top:8px"></select></div></div>
+      <div class="g-step"><span>2</span><div><b>Instala el conector en MT5 (solo la primera vez)</b>
+        <a class="g-dl" href="mt5/JournalSync.mq5" download>⬇️ Descargar JournalSync.mq5</a>
+        En MT5: <b>Archivo → Abrir carpeta de datos → MQL5 → Experts</b> → pega el archivo. Presiona <kbd>F4</kbd>, abre JournalSync y pulsa <kbd>F7</kbd>.
+        Luego <b>Herramientas → Opciones → Asesores Expertos</b> → marca <i>"Permitir WebRequest para las URL"</i> y agrega:
+        <div class="g-url"><code>https://securetoken.googleapis.com</code><button onclick="tjCopy(this)">Copiar</button></div>
+        <div class="g-url"><code>https://firestore.googleapis.com</code><button onclick="tjCopy(this)">Copiar</button></div></div></div>
+      <div class="g-step"><span>3</span><div><b>Genera tu código y pégalo en MT5</b>
+        <button class="btn btn-primary" id="tjLinkBtn" style="margin:8px 0;width:100%" onclick="tjLinkGen()">Generar código</button>
+        <div id="tjLinkCode" style="display:none">
+          <div class="g-url g-code"><code id="tjLinkCodeTxt"></code><button onclick="tjCopy(this)">Copiar código</button></div>
+          Arrastra <b>JournalSync</b> a cualquier gráfico → pestaña <b>Entradas</b> → pega el código en <b>CodigoConexion</b> → <b>Aceptar</b>.
+          <div id="tjLinkStatus" class="g-wait">⏳ Esperando que MT5 use el código… (válido por 30 min, un solo uso)</div>
+        </div></div></div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="tjLinkClose()">Cerrar</button></div>
+  </div>
+</div>
+<script>
+let tjLinkCode = null, tjLinkUnsub = null, tjLinkTimer = null;
+function tjLinkOpen() {
+  const ok = !!(window.TJAuth && window.TJAuth.createLink);
+  document.getElementById('tjLinkNoAuth').style.display = ok ? 'none' : 'block';
+  document.getElementById('tjLinkBody').style.display = ok ? 'block' : 'none';
+  const sel = document.getElementById('tjLinkAcc');
+  sel.innerHTML = accounts.map(a => `<option value="${a.id}" ${a.id === currentAccountId ? 'selected' : ''}>${a.name}</option>`).join('');
+  document.getElementById('tjLink').classList.add('open');
+}
+async function tjLinkGen() {
+  const btn = document.getElementById('tjLinkBtn'); btn.disabled = true; btn.textContent = 'Generando…';
+  try {
+    await TJSync.push();                                   // asegura que la cuenta elegida exista en la nube
+    if (tjLinkCode) TJAuth.deleteLink(tjLinkCode);
+    if (tjLinkUnsub) tjLinkUnsub();
+    tjLinkCode = await TJAuth.createLink(document.getElementById('tjLinkAcc').value);
+    document.getElementById('tjLinkCodeTxt').textContent = tjLinkCode;
+    document.getElementById('tjLinkCode').style.display = 'block';
+    const st = document.getElementById('tjLinkStatus');
+    st.className = 'g-wait'; st.textContent = '⏳ Esperando que MT5 use el código… (válido por 30 min, un solo uso)';
+    tjLinkUnsub = TJAuth.watchLink(tjLinkCode, () => {
+      st.className = 'g-ok'; st.textContent = '✅ ¡MT5 conectado! Tus operaciones cerradas aparecerán solas en unos segundos.';
+      tjLinkCode = null; if (tjLinkUnsub) { tjLinkUnsub(); tjLinkUnsub = null; } clearTimeout(tjLinkTimer);
+    });
+    clearTimeout(tjLinkTimer);
+    tjLinkTimer = setTimeout(() => { if (tjLinkCode) { TJAuth.deleteLink(tjLinkCode); tjLinkCode = null; st.className = 'g-err'; st.textContent = '⌛ El código venció. Genera uno nuevo.'; } }, 30 * 60 * 1000);
+    btn.textContent = 'Generar otro código';
+  } catch (e) { alert('No se pudo generar el código: ' + (e.message || e)); btn.textContent = 'Generar código'; }
+  btn.disabled = false;
+}
+function tjLinkClose() {
+  document.getElementById('tjLink').classList.remove('open');
+  const st = document.getElementById('tjLinkStatus');
+  if (tjLinkCode && st && st.className === 'g-wait') return;   // si está esperando, el código sigue válido hasta que venza
+}
+</script>
 <!-- ── GUÍA MT5 ── -->
 <div class="modal-overlay" id="tjGuide" onclick="if(event.target===this)tjGuide(false)">
   <div class="modal tj-guide" style="max-width:560px">
@@ -3260,26 +3330,14 @@ function pwaDismiss(){var b=document.getElementById('installBanner');if(b)b.styl
     <p class="g-intro">Hay dos formas. La <b>automática</b> manda cada operación cerrada a tu journal en segundos, sin hacer nada más. La <b>manual</b> carga el informe de MT5 cuando tú quieras.</p>
 
     <div class="g-sec">⚡ Automática (recomendada)</div>
-    <div class="g-step"><span>1</span><div><b>Descarga el conector</b>
-      <a class="g-dl" href="mt5/JournalSync.mq5" download>⬇️ Descargar JournalSync.mq5</a>
-      En MT5: <b>Archivo → Abrir carpeta de datos → MQL5 → Experts</b> y pega ahí el archivo.</div></div>
-    <div class="g-step"><span>2</span><div><b>Actívalo (solo la primera vez)</b>
-      En MT5 presiona <kbd>F4</kbd> (abre MetaEditor), abre <b>JournalSync.mq5</b> y pulsa <kbd>F7</kbd> (Compilar). Vuelve a MT5 y, en el Navegador, clic derecho en <b>Asesores Expertos → Actualizar</b>.</div></div>
-    <div class="g-step"><span>3</span><div><b>Permite la conexión (solo la primera vez)</b>
-      <b>Herramientas → Opciones → Asesores Expertos</b> → marca <i>"Permitir WebRequest para las URL"</i> y agrega estas 3:
-      <div class="g-url"><code>https://identitytoolkit.googleapis.com</code><button onclick="tjCopy(this)">Copiar</button></div>
-      <div class="g-url"><code>https://securetoken.googleapis.com</code><button onclick="tjCopy(this)">Copiar</button></div>
-      <div class="g-url"><code>https://firestore.googleapis.com</code><button onclick="tjCopy(this)">Copiar</button></div></div></div>
-    <div class="g-step"><span>4</span><div><b>Conéctalo a tu journal</b>
-      Arrastra <b>JournalSync</b> a cualquier gráfico. En la pestaña <b>Entradas</b> escribe el <b>correo y la contraseña de este journal</b> (no los de MT5) y el nombre exacto de la <b>cuenta del journal</b> donde guardar (ej. <i>Cuenta Principal</i>; si no existe, se crea sola). Activa <b>Permitir Algo Trading</b> → <b>Aceptar</b>.</div></div>
-    <div class="g-step"><span>5</span><div><b>Listo</b>
-      Arriba a la izquierda del gráfico verás <b>"✅ Conectado"</b>. Al conectar envía los últimos 90 días, y desde ahí cada operación que cierres aparece sola en el PC y en el celular.</div></div>
+    <div class="g-step"><span>★</span><div><b>Conecta tu cuenta MT5 en 3 pasos</b>
+      Descargas el conector, lo instalas una vez en MT5 y pegas un código que genera la app. Desde ahí cada operación cerrada aparece sola en el PC y en el celular.
+      <button class="btn btn-primary" style="margin-top:10px;width:100%" onclick="tjGuide(false);tjLinkOpen()">🔗 Conectar cuenta MT5</button></div></div>
     <div class="g-box"><b>Sobre la automática</b><ul>
       <li>Funciona mientras <b>MT5 esté abierto</b>. Con un VPS de MT5 queda funcionando 24/7.</li>
-      <li>Solo <b>lee</b> el historial: no abre, cierra ni modifica operaciones.</li>
-      <li>Después de conectar puedes borrar la contraseña de las Entradas: queda recordada en ese PC.</li>
-      <li>Tus notas y pantallazos se mantienen; el EA solo actualiza P&amp;L, trades, BUY/SELL y TP/SL.</li>
-      <li>Si tienes varias cuentas MT5, pon el EA en cada una con su propio nombre de cuenta del journal.</li>
+      <li>Solo <b>lee</b> el historial: no abre, cierra ni modifica operaciones. No pide la contraseña de MT5 ni la del journal.</li>
+      <li>Al conectar envía los últimos 90 días. Tus notas y pantallazos se mantienen.</li>
+      <li>Si tienes varias cuentas MT5, genera un código para cada una y elige su cuenta del journal.</li>
     </ul></div>
 
     <details class="g-manual"><summary>📄 Manual: cargar el informe HTML</summary>
@@ -3332,6 +3390,7 @@ function tjCopy(b){ const t=b.previousElementSibling.textContent; (navigator.cli
   <button onclick="tjMenu(false);toggleTheme()">🌗 Cambiar modo noche / día</button>
   <button onclick="tjMenu(false);addAccount()">➕ Nueva cuenta</button>
   <button onclick="tjMenu(false);deleteAccount();render()">🗑️ Eliminar cuenta actual</button>
+  <button onclick="tjMenu(false);tjLinkOpen()">🔗 Conectar cuenta MT5 (automático)</button>
   <button onclick="tjMenu(false);tjGuide(true)">📘 Guía: enlazar MT5 con tu journal</button>
   <button onclick="tjMenu(false);openImportModal()">📥 Importar reporte MT5</button>
   <button onclick="tjMenu(false);openShareModal()">📤 Compartir</button>
@@ -3391,7 +3450,17 @@ if (!firebaseConfig.apiKey.includes('PEGAR')) {
     signIn: (e, p) => A.signInWithEmailAndPassword(auth, e, p),
     signUp: (e, p) => A.createUserWithEmailAndPassword(auth, e, p),
     reset: e => A.sendPasswordResetEmail(auth, e),
-    signOut: () => A.signOut(auth)
+    signOut: () => A.signOut(auth),
+    // Código de un solo uso para conectar el EA de MT5 (se borra cuando el EA lo usa)
+    createLink: async (acc) => {
+      const abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', r = new Uint32Array(12); crypto.getRandomValues(r);
+      let code = ''; r.forEach((n, i) => { code += abc[n % abc.length]; if (i === 3 || i === 7) code += '-'; });
+      const u = auth.currentUser; await u.getIdToken();
+      await F.setDoc(F.doc(db, 'links', code), { uid: u.uid, acc, token: u.refreshToken, created: Date.now() });
+      return code;
+    },
+    watchLink: (code, onUsed) => F.onSnapshot(F.doc(db, 'links', code), s => { if (!s.exists() && !s.metadata.fromCache) onUsed(); }, () => {}),
+    deleteLink: (code) => F.deleteDoc(F.doc(db, 'links', code)).catch(() => {})
   };
   const adapter = uid => {
     const userRef = F.doc(db, 'users', uid), daysRef = F.collection(db, 'users', uid, 'days');

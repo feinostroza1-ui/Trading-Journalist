@@ -709,6 +709,15 @@
   .tj-menu-card button:hover { background: var(--bg3); }
   .tj-menu-card .ver { text-align:center; color: var(--muted); font-size:11px; padding:6px 0 2px; }
 
+  .tj-guide .g-intro { font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:16px; }
+  .tj-guide .g-step { display:flex; gap:14px; padding:14px; border:1px solid var(--border); border-radius:16px; background:var(--bg); margin-bottom:10px; font-size:14px; line-height:1.55; color:var(--muted); }
+  .tj-guide .g-step > span { flex-shrink:0; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; color:#04130c; background:var(--neon); box-shadow:0 0 12px rgba(46,229,157,.45); }
+  .tj-guide .g-step b:first-child { display:block; color:var(--text); font-size:15px; margin-bottom:3px; }
+  .tj-guide .g-step b { color:var(--text); }
+  .tj-guide kbd { font-family:inherit; font-size:12px; padding:1px 7px; border-radius:6px; border:1px solid var(--border); background:var(--bg3); color:var(--text); }
+  .tj-guide .g-box { border:1px solid var(--neon-soft); border-radius:16px; padding:14px 16px; margin:14px 0 4px; font-size:13.5px; color:var(--muted); line-height:1.55; }
+  .tj-guide .g-box > b { color:var(--neon); display:block; margin-bottom:6px; }
+  .tj-guide .g-box ul { padding-left:18px; } .tj-guide .g-box li { margin-bottom:5px; } .tj-guide .g-box li b { color:var(--text); }
   .btn-icon svg { width:26px; height:26px; color: var(--neon); }
   .metric-ico svg { width:30px; height:30px; display:block; }
   .metric-ico.up, .metric-ico.trophy { color: var(--neon); }
@@ -1091,7 +1100,8 @@
     <h2>📥 Importar reporte MT5</h2>
     <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6">
       En MT5: <strong>Historial → clic derecho → Informe → HTML</strong><br>
-      Selecciona el archivo HTML exportado y los trades se importarán automáticamente al mes correspondiente.
+      Selecciona el archivo HTML exportado y los trades se importarán automáticamente al mes correspondiente.<br>
+      <a href="#" onclick="event.preventDefault();closeImportModal();tjGuide(true)" style="color:var(--neon);font-weight:700;text-decoration:none">📘 Ver guía paso a paso</a>
     </p>
     <div class="import-zone" id="importZone">
       <input type="file" id="importFile" accept=".html,.htm" onchange="handleImportFile(event)">
@@ -3235,6 +3245,47 @@ function pwaDismiss(){var b=document.getElementById('installBanner');if(b)b.styl
 </script>
 
 <div id="installBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:#252d38;border-top:1px solid #3d4f66;padding:12px 16px;align-items:center;gap:10px;flex-wrap:wrap;"><span style="flex:1;font-weight:700;font-size:14px;color:#f0f4f8">Trading Journal</span><button onclick="pwaInstall()" style="background:#60a5fa;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:600;">Instalar</button><button onclick="pwaDismiss()" style="background:none;color:#94a3b8;border:1px solid #3d4f66;border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;">×</button></div>
+<!-- ── GUÍA MT5 ── -->
+<div class="modal-overlay" id="tjGuide" onclick="if(event.target===this)tjGuide(false)">
+  <div class="modal tj-guide" style="max-width:560px">
+    <h2>📘 Enlazar MT5 con tu journal</h2>
+    <p class="g-intro">Tus operaciones de MetaTrader 5 se cargan con el <b>informe HTML</b> de MT5. Se hace desde el <b>PC</b> y después aparecen solas en el celular, porque tu journal está sincronizado.</p>
+
+    <div class="g-step"><span>1</span><div><b>Elige la cuenta del journal</b>
+      Arriba, en <b>Cuenta</b>, selecciona dónde quieres guardar las operaciones. Si tienes varias cuentas de MT5 (ej. FTMO 100k y 25k), crea una por cada una con <b>+ Nueva cuenta</b>.</div></div>
+
+    <div class="g-step"><span>2</span><div><b>Abre el historial en MT5 (PC)</b>
+      En MetaTrader 5 presiona <kbd>Ctrl</kbd> + <kbd>T</kbd> (o menú <b>Ver → Caja de herramientas</b>) y entra a la pestaña <b>Historial</b>.</div></div>
+
+    <div class="g-step"><span>3</span><div><b>Elige el período</b>
+      Clic derecho sobre la lista → <b>Todo el historial</b>, <b>Último mes</b> o <b>Período personalizado</b>. Solo se importa lo que se ve en la lista.</div></div>
+
+    <div class="g-step"><span>4</span><div><b>Guarda el informe</b>
+      Clic derecho otra vez → <b>Informe</b> → <b>HTML (Internet Explorer)</b>, y guárdalo (por ejemplo en el Escritorio). En versiones nuevas también está en <b>Ver → Informes → Guardar como → HTML</b>.</div></div>
+
+    <div class="g-step"><span>5</span><div><b>Impórtalo al journal</b>
+      Pulsa <b>Importar MT5</b> y elige el archivo (o arrástralo). Verás un mensaje como <i>"✅ 70 operaciones en 40 días · P&amp;L -$661.20"</i>. Compara ese P&amp;L con el <b>Beneficio Neto</b> que aparece al final del informe: deben ser iguales.</div></div>
+
+    <div class="g-step"><span>6</span><div><b>Mantenlo al día</b>
+      Repite los pasos 2 a 5 cuando quieras (cada día o cada semana). Volver a importar <b>no duplica</b>: reemplaza los días del informe y mantiene tus notas, tags y pantallazos.</div></div>
+
+    <div class="g-box">
+      <b>Bueno saber</b>
+      <ul>
+        <li>La app de MT5 del <b>celular no genera informes</b>: hazlo desde el PC.</li>
+        <li>El P&amp;L de cada operación incluye comisión y swap, y se cuenta en el <b>día de cierre</b> (hora del servidor del broker).</li>
+        <li>Si sale <i>"No se encontraron operaciones"</i>, revisa que exportaste desde <b>Historial</b> y que el período tenga operaciones cerradas.</li>
+        <li>Si un día muestra un monto raro, vuelve a importar el informe: se corrige solo.</li>
+        <li>Solo necesitas el informe: el journal nunca te pide la contraseña de MT5.</li>
+      </ul>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="tjGuide(false)">Cerrar</button>
+      <button class="btn btn-primary" onclick="tjGuide(false);openImportModal()">📥 Importar ahora</button>
+    </div>
+  </div>
+</div>
+<script>function tjGuide(open){ document.getElementById('tjGuide').classList.toggle('open', open); }</script>
 <!-- ── BARRA INFERIOR + MENÚ ── -->
 <nav class="tj-bottom"><div class="tj-bottom-in">
   <button class="tj-tab active" data-tab="home" onclick="tjGo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>Inicio</button>
@@ -3246,6 +3297,7 @@ function pwaDismiss(){var b=document.getElementById('installBanner');if(b)b.styl
   <button onclick="tjMenu(false);toggleTheme()">🌗 Cambiar modo noche / día</button>
   <button onclick="tjMenu(false);addAccount()">➕ Nueva cuenta</button>
   <button onclick="tjMenu(false);deleteAccount();render()">🗑️ Eliminar cuenta actual</button>
+  <button onclick="tjMenu(false);tjGuide(true)">📘 Guía: enlazar MT5 con tu journal</button>
   <button onclick="tjMenu(false);openImportModal()">📥 Importar reporte MT5</button>
   <button onclick="tjMenu(false);openShareModal()">📤 Compartir</button>
   <button onclick="tjMenu(false);tjGo('cons')">🏦 Consolidado de cuentas</button>
